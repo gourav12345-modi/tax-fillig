@@ -1,0 +1,42 @@
+{
+  "name": "tfa-tax-form-annotation",
+  "version": "1.0.0",
+  "description": "TFA — a declarative specification for annotating fillable U.S. tax forms, plus a zero-dependency reference implementation.",
+  "type": "module",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
+  "bin": {
+    "tfa": "./src/cli.js"
+  },
+  "scripts": {
+    "test": "node --test test/",
+    "lint": "node src/cli.js lint annotations/*.tfa.json",
+    "demo": "./tools/demo.sh",
+    "types": "node node_modules/typescript/lib/tsc.js --noEmit --strict --skipLibCheck types/tfa.d.ts",
+    "metrics": "node tools/build-metrics.mjs   # pass a directory of .afm files, redirect to src/metrics.js"
+  },
+  "devDependencies": {
+    "ajv": "^8.20.0",
+    "pdf-lib": "^1.17.1",
+    "typescript": "^7.0.2"
+  },
+  "keywords": [
+    "tax",
+    "forms",
+    "irs",
+    "1040",
+    "pdf",
+    "annotation",
+    "specification"
+  ],
+  "files": [
+    "src",
+    "schema",
+    "types",
+    "annotations",
+    "SPEC.md",
+    "README.md"
+  ]
+}

@@ -1,0 +1,2178 @@
+{
+  "$schema": "../schema/tfa-1.0.schema.json",
+  "tfa": "1.0",
+  "id": "us.irs.941:2026",
+  "version": "1.0.0",
+  "form": {
+    "authority": "US-IRS",
+    "catalog": "17001Z",
+    "formNumber": "941",
+    "locale": "en-US",
+    "note": "A third form family — employment tax rather than income tax — annotated with the same vocabulary. Its money boxes are split dollars/cents, which is what `layout.mode: \"split\"` exists for.",
+    "omb": "1545-0029",
+    "revision": "2026-03",
+    "taxYear": 2026,
+    "title": "Form 941 — Employer's QUARTERLY Federal Tax Return"
+  },
+  "media": {
+    "origin": "top-left",
+    "pageCount": 3,
+    "pages": [
+      {
+        "height": 791.968,
+        "index": 0,
+        "rotate": 0,
+        "width": 611.976
+      },
+      {
+        "height": 791.968,
+        "index": 1,
+        "rotate": 0,
+        "width": 611.976
+      },
+      {
+        "height": 791.968,
+        "index": 2,
+        "rotate": 0,
+        "width": 611.976
+      }
+    ],
+    "sha256": "38a3d8cf7a455101d52543c8c48e66202bc25c189ead878627e35c797c88e2ad",
+    "units": "pt",
+    "uri": "https://www.irs.gov/pub/irs-pdf/f941.pdf"
+  },
+  "fonts": {
+    "sans": {
+      "base14": "Helvetica",
+      "bold": "Helvetica-Bold",
+      "family": "Helvetica"
+    }
+  },
+  "defaults": {
+    "style": {
+      "align": "left",
+      "color": "#000000",
+      "font": "sans",
+      "size": 9.5,
+      "valign": "middle"
+    },
+    "format": {
+      "type": "text"
+    }
+  },
+  "styles": {
+    "comb": {
+      "align": "center",
+      "pad": 0
+    },
+    "entry": {
+      "fit": {
+        "min": 6,
+        "mode": "shrink"
+      },
+      "pad": {
+        "left": 4,
+        "right": 4
+      }
+    },
+    "entryCentered": {
+      "$extends": "entry",
+      "align": "center"
+    },
+    "money": {
+      "align": "right",
+      "fit": {
+        "min": 7,
+        "mode": "shrink"
+      }
+    }
+  },
+  "formats": {
+    "accountNumber": {
+      "type": "digits"
+    },
+    "count": {
+      "decimals": 0,
+      "grouping": true,
+      "type": "number",
+      "zero": "zero"
+    },
+    "routingNumber": {
+      "length": 9,
+      "type": "digits"
+    },
+    "stateCode": {
+      "case": "upper",
+      "maxLength": 2,
+      "type": "text"
+    },
+    "text": {
+      "type": "text"
+    },
+    "upperText": {
+      "case": "upper",
+      "type": "text"
+    },
+    "usdCents": {
+      "decimals": 2,
+      "grouping": true,
+      "negative": "minus",
+      "null": "blank",
+      "rounding": "half-up",
+      "type": "number",
+      "zero": "blank"
+    },
+    "zip": {
+      "maxLength": 10,
+      "type": "text"
+    }
+  },
+  "profiles": {
+    "client": {
+      "description": "The employer's copy, with the EIN, bank details and designee PIN masked.",
+      "redact": [
+        {
+          "mode": "last4",
+          "select": "tag:pii.ein"
+        },
+        {
+          "mode": "last4",
+          "select": "tag:pii.bank"
+        },
+        {
+          "mode": "full",
+          "select": "tag:pii.pin"
+        }
+      ]
+    },
+    "filing": {
+      "description": "The copy that goes to the IRS."
+    }
+  },
+  "fields": [
+    {
+      "id": "employer.einPrefix",
+      "kind": "text",
+      "page": 0,
+      "box": [153.24, 66.0, 44.22, 18.0],
+      "layout": {
+        "cells": [
+          [0.0, 19.44],
+          [24.78, 19.44]
+        ],
+        "mode": "comb"
+      },
+      "style": "comb",
+      "format": "text",
+      "bind": {
+        "required": true,
+        "path": "$.employer.ein",
+        "transform": [
+          {
+            "op": "digits"
+          },
+          {
+            "end": 2,
+            "op": "slice",
+            "start": 0
+          }
+        ]
+      },
+      "tags": [
+        "pii.ein"
+      ],
+      "refs": {
+        "acroField": "f1_1[0]",
+        "label": "EIN — first two digits"
+      }
+    },
+    {
+      "id": "employer.einSuffix",
+      "kind": "text",
+      "page": 0,
+      "box": [215.76, 66.0, 171.72, 18.0],
+      "layout": {
+        "cells": [
+          [0.0, 19.44],
+          [25.38, 19.44],
+          [50.76, 19.44],
+          [76.08, 19.44],
+          [101.52, 19.44],
+          [126.84, 19.44],
+          [152.28, 19.44]
+        ],
+        "mode": "comb"
+      },
+      "style": "comb",
+      "format": "text",
+      "bind": {
+        "required": true,
+        "path": "$.employer.ein",
+        "transform": [
+          {
+            "op": "digits"
+          },
+          {
+            "end": 9,
+            "op": "slice",
+            "start": 2
+          }
+        ]
+      },
+      "tags": [
+        "pii.ein"
+      ],
+      "refs": {
+        "acroField": "f1_2[0]",
+        "label": "EIN — remaining seven digits"
+      }
+    },
+    {
+      "id": "employer.name",
+      "kind": "text",
+      "page": 0,
+      "box": [136.8, 90.0, 252.0, 18.0],
+      "style": "entry",
+      "format": "upperText",
+      "bind": {
+        "required": true,
+        "path": "$.employer.name"
+      },
+      "refs": {
+        "acroField": "f1_3[0]",
+        "label": "Name (not your trade name)"
+      }
+    },
+    {
+      "id": "employer.tradeName",
+      "kind": "text",
+      "page": 0,
+      "box": [115.2, 114.0, 273.6, 18.0],
+      "style": "entry",
+      "format": "upperText",
+      "bind": "$.employer.tradeName",
+      "refs": {
+        "acroField": "f1_4[0]",
+        "label": "Trade name (if any)"
+      }
+    },
+    {
+      "id": "employer.address",
+      "kind": "text",
+      "page": 0,
+      "box": [79.2, 138.0, 240.0, 18.0],
+      "style": "entry",
+      "format": "upperText",
+      "bind": "$.employer.address.street",
+      "refs": {
+        "acroField": "f1_5[0]",
+        "label": "Address — number and street",
+        "note": "The widget spans the whole row; the street stops short of the printed 'Suite or room number' caption at x 323.6–382.0."
+      }
+    },
+    {
+      "id": "employer.suite",
+      "kind": "text",
+      "page": 0,
+      "box": [319.2, 138.0, 69.6, 18.0],
+      "style": "entry",
+      "format": "upperText",
+      "bind": "$.employer.address.suite",
+      "refs": {
+        "label": "Address — suite or room number",
+        "note": "Same widget as the street (f1_5[0]), placed under the form's own 'Suite or room number' caption."
+      }
+    },
+    {
+      "id": "employer.city",
+      "kind": "text",
+      "page": 0,
+      "box": [79.2, 168.0, 187.2, 18.0],
+      "style": "entry",
+      "format": "upperText",
+      "bind": "$.employer.address.city",
+      "refs": {
+        "acroField": "f1_6[0]",
+        "label": "City"
+      }
+    },
+    {
+      "id": "employer.state",
+      "kind": "text",
+      "page": 0,
+      "box": [273.6, 168.0, 36.0, 18.0],
+      "style": "entryCentered",
+      "format": "stateCode",
+      "bind": "$.employer.address.state",
+      "refs": {
+        "acroField": "f1_7[0]",
+        "label": "State"
+      }
+    },
+    {
+      "id": "employer.zip",
+      "kind": "text",
+      "page": 0,
+      "box": [316.8, 168.0, 72.0, 18.0],
+      "style": "entry",
+      "format": "zip",
+      "bind": "$.employer.address.zip",
+      "refs": {
+        "acroField": "f1_8[0]",
+        "label": "ZIP code"
+      }
+    },
+    {
+      "id": "quarter",
+      "kind": "choice",
+      "page": 0,
+      "options": [
+        {
+          "box": [424.8, 97.0, 10.0, 10.0],
+          "value": 1
+        },
+        {
+          "box": [424.8, 113.0, 10.0, 10.0],
+          "value": 2
+        },
+        {
+          "box": [424.8, 129.0, 10.0, 10.0],
+          "value": 3
+        },
+        {
+          "box": [424.8, 145.0, 10.0, 10.0],
+          "value": 4
+        }
+      ],
+      "mark": {
+        "glyph": "X",
+        "inset": 1
+      },
+      "bind": {
+        "required": true,
+        "path": "$.filing.quarter"
+      },
+      "refs": {
+        "label": "Report for this Quarter"
+      }
+    },
+    {
+      "id": "aggregateFilerType",
+      "kind": "choice",
+      "page": 0,
+      "options": [
+        {
+          "box": [424.8, 198.25, 10.0, 10.0],
+          "value": "SECTION_3504_AGENT"
+        },
+        {
+          "box": [424.8, 212.5, 10.0, 10.0],
+          "value": "CPEO"
+        },
+        {
+          "box": [424.8, 228.25, 10.0, 10.0],
+          "value": "OTHER_THIRD_PARTY"
+        }
+      ],
+      "mark": {
+        "glyph": "X",
+        "inset": 1
+      },
+      "bind": "$.filing.aggregateFilerType",
+      "exhaustive": true,
+      "refs": {
+        "label": "Aggregate Return Filers Only — type of filer"
+      }
+    },
+    {
+      "id": "line1",
+      "kind": "text",
+      "page": 0,
+      "box": [446.4, 294.0, 129.6, 14.0],
+      "style": "money",
+      "format": "count",
+      "bind": "$.part1.line1.employeeCount",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_12[0]",
+        "label": "Number of employees who received wages",
+        "line": "1"
+      }
+    },
+    {
+      "id": "line2",
+      "kind": "text",
+      "page": 0,
+      "box": [446.4, 316.0, 128.85, 14.0],
+      "layout": {
+        "mode": "split",
+        "segments": [
+          {
+            "id": "dollars",
+            "align": "right",
+            "pad": {
+              "right": 4
+            },
+            "part": "integer",
+            "w": 100.8
+          },
+          {
+            "id": "point",
+            "w": 7.2
+          },
+          {
+            "id": "cents",
+            "align": "center",
+            "pad": 0,
+            "part": "fraction",
+            "w": 20.85
+          }
+        ]
+      },
+      "style": "money",
+      "format": "usdCents",
+      "bind": "$.part1.line2.wagesTipsOtherCompensation",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_13[0]+f1_14[0]",
+        "label": "Wages, tips, and other compensation",
+        "line": "2"
+      }
+    },
+    {
+      "id": "line3",
+      "kind": "text",
+      "page": 0,
+      "box": [446.4, 336.0, 128.85, 14.0],
+      "layout": {
+        "mode": "split",
+        "segments": [
+          {
+            "id": "dollars",
+            "align": "right",
+            "pad": {
+              "right": 4
+            },
+            "part": "integer",
+            "w": 100.8
+          },
+          {
+            "id": "point",
+            "w": 7.2
+          },
+          {
+            "id": "cents",
+            "align": "center",
+            "pad": 0,
+            "part": "fraction",
+            "w": 20.85
+          }
+        ]
+      },
+      "style": "money",
+      "format": "usdCents",
+      "bind": "$.part1.line3.federalIncomeTaxWithheld",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_15[0]+f1_16[0]",
+        "label": "Federal income tax withheld",
+        "line": "3"
+      }
+    },
+    {
+      "id": "line4.noSocialSecurityOrMedicareWages",
+      "kind": "mark",
+      "page": 0,
+      "box": [446.4, 358.5, 10.0, 10.0],
+      "mark": {
+        "glyph": "X",
+        "inset": 1
+      },
+      "when": "$.part1.line4.noSocialSecurityOrMedicareWages isTrue",
+      "refs": {
+        "acroField": "c1_3[0]",
+        "label": "No wages subject to social security or Medicare tax",
+        "line": "4"
+      }
+    },
+    {
+      "id": "line5a.column1",
+      "kind": "text",
+      "page": 0,
+      "box": [216.0, 388.0, 92.85, 14.0],
+      "layout": {
+        "mode": "split",
+        "segments": [
+          {
+            "id": "dollars",
+            "align": "right",
+            "pad": {
+              "right": 4
+            },
+            "part": "integer",
+            "w": 64.8
+          },
+          {
+            "id": "point",
+            "w": 7.2
+          },
+          {
+            "id": "cents",
+            "align": "center",
+            "pad": 0,
+            "part": "fraction",
+            "w": 20.85
+          }
+        ]
+      },
+      "style": "money",
+      "format": "usdCents",
+      "bind": "$.part1.line5a.socialSecurityWages.taxableAmount",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_17[0]",
+        "label": "Taxable social security wages — Column 1",
+        "line": "5a"
+      }
+    },
+    {
+      "id": "line5a.column2",
+      "kind": "text",
+      "page": 0,
+      "box": [352.8, 388.0, 92.85, 14.0],
+      "layout": {
+        "mode": "split",
+        "segments": [
+          {
+            "id": "dollars",
+            "align": "right",
+            "pad": {
+              "right": 4
+            },
+            "part": "integer",
+            "w": 64.8
+          },
+          {
+            "id": "point",
+            "w": 7.2
+          },
+          {
+            "id": "cents",
+            "align": "center",
+            "pad": 0,
+            "part": "fraction",
+            "w": 20.85
+          }
+        ]
+      },
+      "style": "money",
+      "format": "usdCents",
+      "bind": "$.part1.line5a.socialSecurityWages.tax",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_19[0]",
+        "label": "Taxable social security wages — Column 2",
+        "line": "5a"
+      }
+    },
+    {
+      "id": "line5b.column1",
+      "kind": "text",
+      "page": 0,
+      "box": [216.0, 408.0, 92.85, 14.0],
+      "layout": {
+        "mode": "split",
+        "segments": [
+          {
+            "id": "dollars",
+            "align": "right",
+            "pad": {
+              "right": 4
+            },
+            "part": "integer",
+            "w": 64.8
+          },
+          {
+            "id": "point",
+            "w": 7.2
+          },
+          {
+            "id": "cents",
+            "align": "center",
+            "pad": 0,
+            "part": "fraction",
+            "w": 20.85
+          }
+        ]
+      },
+      "style": "money",
+      "format": "usdCents",
+      "bind": "$.part1.line5b.socialSecurityTips.taxableAmount",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_21[0]",
+        "label": "Taxable social security tips — Column 1",
+        "line": "5b"
+      }
+    },
+    {
+      "id": "line5b.column2",
+      "kind": "text",
+      "page": 0,
+      "box": [352.8, 408.0, 92.85, 14.0],
+      "layout": {
+        "mode": "split",
+        "segments": [
+          {
+            "id": "dollars",
+            "align": "right",
+            "pad": {
+              "right": 4
+            },
+            "part": "integer",
+            "w": 64.8
+          },
+          {
+            "id": "point",
+            "w": 7.2
+          },
+          {
+            "id": "cents",
+            "align": "center",
+            "pad": 0,
+            "part": "fraction",
+            "w": 20.85
+          }
+        ]
+      },
+      "style": "money",
+      "format": "usdCents",
+      "bind": "$.part1.line5b.socialSecurityTips.tax",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_23[0]",
+        "label": "Taxable social security tips — Column 2",
+        "line": "5b"
+      }
+    },
+    {
+      "id": "line5c.column1",
+      "kind": "text",
+      "page": 0,
+      "box": [216.0, 428.0, 92.85, 14.0],
+      "layout": {
+        "mode": "split",
+        "segments": [
+          {
+            "id": "dollars",
+            "align": "right",
+            "pad": {
+              "right": 4
+            },
+            "part": "integer",
+            "w": 64.8
+          },
+          {
+            "id": "point",
+            "w": 7.2
+          },
+          {
+            "id": "cents",
+            "align": "center",
+            "pad": 0,
+            "part": "fraction",
+            "w": 20.85
+          }
+        ]
+      },
+      "style": "money",
+      "format": "usdCents",
+      "bind": "$.part1.line5c.medicareWagesAndTips.taxableAmount",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_25[0]",
+        "label": "Taxable Medicare wages & tips — Column 1",
+        "line": "5c"
+      }
+    },
+    {
+      "id": "line5c.column2",
+      "kind": "text",
+      "page": 0,
+      "box": [352.8, 428.0, 92.85, 14.0],
+      "layout": {
+        "mode": "split",
+        "segments": [
+          {
+            "id": "dollars",
+            "align": "right",
+            "pad": {
+              "right": 4
+            },
+            "part": "integer",
+            "w": 64.8
+          },
+          {
+            "id": "point",
+            "w": 7.2
+          },
+          {
+            "id": "cents",
+            "align": "center",
+            "pad": 0,
+            "part": "fraction",
+            "w": 20.85
+          }
+        ]
+      },
+      "style": "money",
+      "format": "usdCents",
+      "bind": "$.part1.line5c.medicareWagesAndTips.tax",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_27[0]",
+        "label": "Taxable Medicare wages & tips — Column 2",
+        "line": "5c"
+      }
+    },
+    {
+      "id": "line5d.column1",
+      "kind": "text",
+      "page": 0,
+      "box": [216.0, 454.0, 92.85, 14.0],
+      "layout": {
+        "mode": "split",
+        "segments": [
+          {
+            "id": "dollars",
+            "align": "right",
+            "pad": {
+              "right": 4
+            },
+            "part": "integer",
+            "w": 64.8
+          },
+          {
+            "id": "point",
+            "w": 7.2
+          },
+          {
+            "id": "cents",
+            "align": "center",
+            "pad": 0,
+            "part": "fraction",
+            "w": 20.85
+          }
+        ]
+      },
+      "style": "money",
+      "format": "usdCents",
+      "bind": "$.part1.line5d.additionalMedicareWages.taxableAmount",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_29[0]",
+        "label": "Taxable wages & tips subject to Additional Medicare Tax — Column 1",
+        "line": "5d"
+      }
+    },
+    {
+      "id": "line5d.column2",
+      "kind": "text",
+      "page": 0,
+      "box": [352.8, 454.0, 92.85, 14.0],
+      "layout": {
+        "mode": "split",
+        "segments": [
+          {
+            "id": "dollars",
+            "align": "right",
+            "pad": {
+              "right": 4
+            },
+            "part": "integer",
+            "w": 64.8
+          },
+          {
+            "id": "point",
+            "w": 7.2
+          },
+          {
+            "id": "cents",
+            "align": "center",
+            "pad": 0,
+            "part": "fraction",
+            "w": 20.85
+          }
+        ]
+      },
+      "style": "money",
+      "format": "usdCents",
+      "bind": "$.part1.line5d.additionalMedicareWages.tax",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_31[0]",
+        "label": "Taxable wages & tips subject to Additional Medicare Tax — Column 2",
+        "line": "5d"
+      }
+    },
+    {
+      "id": "line5e",
+      "kind": "text",
+      "page": 0,
+      "box": [446.4, 476.0, 128.85, 14.0],
+      "layout": {
+        "mode": "split",
+        "segments": [
+          {
+            "id": "dollars",
+            "align": "right",
+            "pad": {
+              "right": 4
+            },
+            "part": "integer",
+            "w": 100.8
+          },
+          {
+            "id": "point",
+            "w": 7.2
+          },
+          {
+            "id": "cents",
+            "align": "center",
+            "pad": 0,
+            "part": "fraction",
+            "w": 20.85
+          }
+        ]
+      },
+      "style": "money",
+      "format": "usdCents",
+      "bind": "$.part1.line5e.totalSocialSecurityAndMedicareTaxes",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_33[0]",
+        "label": "Total social security and Medicare taxes",
+        "line": "5e"
+      }
+    },
+    {
+      "id": "line5f",
+      "kind": "text",
+      "page": 0,
+      "box": [446.4, 495.0, 128.85, 14.0],
+      "layout": {
+        "mode": "split",
+        "segments": [
+          {
+            "id": "dollars",
+            "align": "right",
+            "pad": {
+              "right": 4
+            },
+            "part": "integer",
+            "w": 100.8
+          },
+          {
+            "id": "point",
+            "w": 7.2
+          },
+          {
+            "id": "cents",
+            "align": "center",
+            "pad": 0,
+            "part": "fraction",
+            "w": 20.85
+          }
+        ]
+      },
+      "style": "money",
+      "format": "usdCents",
+      "bind": "$.part1.line5f.section3121qTaxDue",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_35[0]",
+        "label": "Section 3121(q) Notice and Demand — tax due on unreported tips",
+        "line": "5f"
+      }
+    },
+    {
+      "id": "line6",
+      "kind": "text",
+      "page": 0,
+      "box": [446.4, 514.0, 128.85, 14.0],
+      "layout": {
+        "mode": "split",
+        "segments": [
+          {
+            "id": "dollars",
+            "align": "right",
+            "pad": {
+              "right": 4
+            },
+            "part": "integer",
+            "w": 100.8
+          },
+          {
+            "id": "point",
+            "w": 7.2
+          },
+          {
+            "id": "cents",
+            "align": "center",
+            "pad": 0,
+            "part": "fraction",
+            "w": 20.85
+          }
+        ]
+      },
+      "style": "money",
+      "format": "usdCents",
+      "bind": "$.part1.line6.totalTaxesBeforeAdjustments",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_37[0]",
+        "label": "Total taxes before adjustments",
+        "line": "6"
+      }
+    },
+    {
+      "id": "line7",
+      "kind": "text",
+      "page": 0,
+      "box": [446.4, 533.0, 128.85, 14.0],
+      "layout": {
+        "mode": "split",
+        "segments": [
+          {
+            "id": "dollars",
+            "align": "right",
+            "pad": {
+              "right": 4
+            },
+            "part": "integer",
+            "w": 100.8
+          },
+          {
+            "id": "point",
+            "w": 7.2
+          },
+          {
+            "id": "cents",
+            "align": "center",
+            "pad": 0,
+            "part": "fraction",
+            "w": 20.85
+          }
+        ]
+      },
+      "style": "money",
+      "format": "usdCents",
+      "bind": "$.part1.line7.fractionsOfCentsAdjustment",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_39[0]",
+        "label": "Current quarter's adjustment for fractions of cents",
+        "line": "7"
+      }
+    },
+    {
+      "id": "line8",
+      "kind": "text",
+      "page": 0,
+      "box": [446.4, 552.0, 128.85, 14.0],
+      "layout": {
+        "mode": "split",
+        "segments": [
+          {
+            "id": "dollars",
+            "align": "right",
+            "pad": {
+              "right": 4
+            },
+            "part": "integer",
+            "w": 100.8
+          },
+          {
+            "id": "point",
+            "w": 7.2
+          },
+          {
+            "id": "cents",
+            "align": "center",
+            "pad": 0,
+            "part": "fraction",
+            "w": 20.85
+          }
+        ]
+      },
+      "style": "money",
+      "format": "usdCents",
+      "bind": "$.part1.line8.sickPayAdjustment",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_41[0]",
+        "label": "Current quarter's adjustment for sick pay",
+        "line": "8"
+      }
+    },
+    {
+      "id": "line9",
+      "kind": "text",
+      "page": 0,
+      "box": [446.4, 571.0, 128.85, 14.0],
+      "layout": {
+        "mode": "split",
+        "segments": [
+          {
+            "id": "dollars",
+            "align": "right",
+            "pad": {
+              "right": 4
+            },
+            "part": "integer",
+            "w": 100.8
+          },
+          {
+            "id": "point",
+            "w": 7.2
+          },
+          {
+            "id": "cents",
+            "align": "center",
+            "pad": 0,
+            "part": "fraction",
+            "w": 20.85
+          }
+        ]
+      },
+      "style": "money",
+      "format": "usdCents",
+      "bind": "$.part1.line9.tipsAndGroupTermLifeAdjustment",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_43[0]",
+        "label": "Adjustments for tips and group-term life insurance",
+        "line": "9"
+      }
+    },
+    {
+      "id": "line10",
+      "kind": "text",
+      "page": 0,
+      "box": [446.4, 590.0, 128.85, 14.0],
+      "layout": {
+        "mode": "split",
+        "segments": [
+          {
+            "id": "dollars",
+            "align": "right",
+            "pad": {
+              "right": 4
+            },
+            "part": "integer",
+            "w": 100.8
+          },
+          {
+            "id": "point",
+            "w": 7.2
+          },
+          {
+            "id": "cents",
+            "align": "center",
+            "pad": 0,
+            "part": "fraction",
+            "w": 20.85
+          }
+        ]
+      },
+      "style": "money",
+      "format": "usdCents",
+      "bind": "$.part1.line10.totalTaxesAfterAdjustments",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_45[0]",
+        "label": "Total taxes after adjustments",
+        "line": "10"
+      }
+    },
+    {
+      "id": "line11",
+      "kind": "text",
+      "page": 0,
+      "box": [446.4, 609.0, 128.85, 14.0],
+      "layout": {
+        "mode": "split",
+        "segments": [
+          {
+            "id": "dollars",
+            "align": "right",
+            "pad": {
+              "right": 4
+            },
+            "part": "integer",
+            "w": 100.8
+          },
+          {
+            "id": "point",
+            "w": 7.2
+          },
+          {
+            "id": "cents",
+            "align": "center",
+            "pad": 0,
+            "part": "fraction",
+            "w": 20.85
+          }
+        ]
+      },
+      "style": "money",
+      "format": "usdCents",
+      "bind": "$.part1.line11.smallBusinessPayrollTaxCredit",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_47[0]",
+        "label": "Qualified small business payroll tax credit",
+        "line": "11"
+      }
+    },
+    {
+      "id": "line12",
+      "kind": "text",
+      "page": 0,
+      "box": [446.4, 628.0, 128.85, 14.0],
+      "layout": {
+        "mode": "split",
+        "segments": [
+          {
+            "id": "dollars",
+            "align": "right",
+            "pad": {
+              "right": 4
+            },
+            "part": "integer",
+            "w": 100.8
+          },
+          {
+            "id": "point",
+            "w": 7.2
+          },
+          {
+            "id": "cents",
+            "align": "center",
+            "pad": 0,
+            "part": "fraction",
+            "w": 20.85
+          }
+        ]
+      },
+      "style": "money",
+      "format": "usdCents",
+      "bind": "$.part1.line12.totalTaxesAfterCredits",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_49[0]",
+        "label": "Total taxes after adjustments and nonrefundable credits",
+        "line": "12"
+      }
+    },
+    {
+      "id": "line13",
+      "kind": "text",
+      "page": 0,
+      "box": [446.4, 653.0, 128.85, 14.0],
+      "layout": {
+        "mode": "split",
+        "segments": [
+          {
+            "id": "dollars",
+            "align": "right",
+            "pad": {
+              "right": 4
+            },
+            "part": "integer",
+            "w": 100.8
+          },
+          {
+            "id": "point",
+            "w": 7.2
+          },
+          {
+            "id": "cents",
+            "align": "center",
+            "pad": 0,
+            "part": "fraction",
+            "w": 20.85
+          }
+        ]
+      },
+      "style": "money",
+      "format": "usdCents",
+      "bind": "$.part1.line13.totalDeposits",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_51[0]",
+        "label": "Total deposits for this quarter",
+        "line": "13"
+      }
+    },
+    {
+      "id": "line14",
+      "kind": "text",
+      "page": 0,
+      "box": [446.4, 675.0, 128.85, 14.0],
+      "layout": {
+        "mode": "split",
+        "segments": [
+          {
+            "id": "dollars",
+            "align": "right",
+            "pad": {
+              "right": 4
+            },
+            "part": "integer",
+            "w": 100.8
+          },
+          {
+            "id": "point",
+            "w": 7.2
+          },
+          {
+            "id": "cents",
+            "align": "center",
+            "pad": 0,
+            "part": "fraction",
+            "w": 20.85
+          }
+        ]
+      },
+      "style": "money",
+      "format": "usdCents",
+      "bind": "$.part1.line14.balanceDue",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_53[0]",
+        "label": "Balance due",
+        "line": "14"
+      }
+    },
+    {
+      "id": "line15a",
+      "kind": "text",
+      "page": 0,
+      "box": [295.2, 694.0, 92.85, 14.0],
+      "layout": {
+        "mode": "split",
+        "segments": [
+          {
+            "id": "dollars",
+            "align": "right",
+            "pad": {
+              "right": 4
+            },
+            "part": "integer",
+            "w": 64.8
+          },
+          {
+            "id": "point",
+            "w": 7.2
+          },
+          {
+            "id": "cents",
+            "align": "center",
+            "pad": 0,
+            "part": "fraction",
+            "w": 20.85
+          }
+        ]
+      },
+      "style": "money",
+      "format": "usdCents",
+      "bind": "$.part1.line15.overpayment",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_55[0]",
+        "label": "Overpayment",
+        "line": "15a"
+      }
+    },
+    {
+      "id": "line15b.disposition",
+      "kind": "choice",
+      "page": 0,
+      "options": [
+        {
+          "box": [446.4, 697.5, 10.0, 10.0],
+          "value": "APPLY_TO_NEXT_RETURN"
+        },
+        {
+          "box": [518.4, 697.5, 10.0, 10.0],
+          "value": "SEND_A_REFUND"
+        }
+      ],
+      "mark": {
+        "glyph": "X",
+        "inset": 1
+      },
+      "bind": "$.part1.line15.disposition",
+      "when": "$.part1.line15.overpayment > 0",
+      "refs": {
+        "label": "Check one",
+        "line": "15b"
+      }
+    },
+    {
+      "id": "line15c.routingNumber",
+      "kind": "text",
+      "page": 0,
+      "box": [129.54, 713.0, 127.2, 12.0],
+      "layout": {
+        "cells": [
+          [0.0, 12.0],
+          [14.4, 12.0],
+          [28.8, 12.0],
+          [43.2, 12.0],
+          [57.6, 12.0],
+          [72.0, 12.0],
+          [86.4, 12.0],
+          [100.8, 12.0],
+          [115.2, 12.0]
+        ],
+        "mode": "comb"
+      },
+      "style": "comb",
+      "format": "routingNumber",
+      "bind": "$.part1.line15.directDeposit.routingNumber",
+      "when": "$.part1.line15.directDeposit exists",
+      "tags": [
+        "pii.bank"
+      ],
+      "refs": {
+        "acroField": "f1_57[0]",
+        "label": "Routing number",
+        "line": "15c"
+      }
+    },
+    {
+      "id": "line15d.accountType",
+      "kind": "choice",
+      "page": 0,
+      "options": [
+        {
+          "box": [331.2, 714.0, 10.0, 10.0],
+          "value": "CHECKING"
+        },
+        {
+          "box": [388.8, 714.0, 10.0, 10.0],
+          "value": "SAVINGS"
+        }
+      ],
+      "mark": {
+        "glyph": "X",
+        "inset": 1
+      },
+      "bind": "$.part1.line15.directDeposit.accountType",
+      "when": "$.part1.line15.directDeposit exists",
+      "refs": {
+        "label": "Account type",
+        "line": "15d"
+      }
+    },
+    {
+      "id": "line15e.accountNumber",
+      "kind": "text",
+      "page": 0,
+      "box": [129.54, 729.0, 242.4, 12.0],
+      "layout": {
+        "cells": [
+          [0.0, 12.0],
+          [14.4, 12.0],
+          [28.8, 12.0],
+          [43.2, 12.0],
+          [57.6, 12.0],
+          [72.0, 12.0],
+          [86.4, 12.0],
+          [100.8, 12.0],
+          [115.2, 12.0],
+          [129.6, 12.0],
+          [144.0, 12.0],
+          [158.4, 12.0],
+          [172.8, 12.0],
+          [187.20000000000002, 12.0],
+          [201.6, 12.0],
+          [216.0, 12.0],
+          [230.4, 12.0]
+        ],
+        "mode": "comb"
+      },
+      "style": "comb",
+      "format": "accountNumber",
+      "bind": "$.part1.line15.directDeposit.accountNumber",
+      "when": "$.part1.line15.directDeposit exists",
+      "tags": [
+        "pii.bank"
+      ],
+      "refs": {
+        "acroField": "f1_58[0]",
+        "label": "Account number",
+        "line": "15e"
+      }
+    },
+    {
+      "id": "page2.employer.name",
+      "kind": "text",
+      "page": 1,
+      "box": [36.0, 58.0, 251.0, 14.0],
+      "style": "entry",
+      "format": "upperText",
+      "bind": {
+        "required": true,
+        "path": "$.employer.name"
+      },
+      "refs": {
+        "acroField": "Page2[0].Name_ReadOrder[0].f1_3[0]",
+        "label": "Name (not your trade name), page 2 header",
+        "note": "A separate field from page 1's; the IRS PDF reuses the short name f1_3[0], so the subform path keeps it unique."
+      }
+    },
+    {
+      "id": "page2.employer.einPrefix",
+      "kind": "text",
+      "page": 1,
+      "box": [410.4, 58.0, 21.6, 14.0],
+      "style": "comb",
+      "format": "text",
+      "bind": {
+        "required": true,
+        "path": "$.employer.ein",
+        "transform": [
+          { "op": "digits" },
+          { "op": "slice", "start": 0, "end": 2 }
+        ]
+      },
+      "tags": [
+        "pii.ein"
+      ],
+      "refs": {
+        "acroField": "Page2[0].EIN_Number[0].f1_1[0]",
+        "label": "EIN — first two digits, page 2 header"
+      }
+    },
+    {
+      "id": "page2.employer.einSuffix",
+      "kind": "text",
+      "page": 1,
+      "box": [438.0, 58.0, 49.6, 14.0],
+      "style": "comb",
+      "format": "text",
+      "bind": {
+        "required": true,
+        "path": "$.employer.ein",
+        "transform": [
+          { "op": "digits" },
+          { "op": "slice", "start": 2, "end": 9 }
+        ]
+      },
+      "tags": [
+        "pii.ein"
+      ],
+      "refs": {
+        "acroField": "Page2[0].EIN_Number[0].f1_2[0]",
+        "label": "EIN — remaining seven digits, page 2 header"
+      }
+    },
+    {
+      "id": "line16.depositSchedule",
+      "kind": "choice",
+      "page": 1,
+      "options": [
+        {
+          "box": [109.2, 107.0, 10.0, 10.0],
+          "value": "LINE12_UNDER_2500"
+        },
+        {
+          "box": [109.2, 156.0, 10.0, 10.0],
+          "value": "MONTHLY"
+        },
+        {
+          "box": [109.2, 271.0, 10.0, 10.0],
+          "value": "SEMIWEEKLY"
+        }
+      ],
+      "mark": {
+        "glyph": "X",
+        "inset": 1
+      },
+      "bind": {
+        "required": true,
+        "path": "$.part2.line16.depositSchedule"
+      },
+      "refs": {
+        "acroField": "c2_1",
+        "label": "Deposit schedule — check one",
+        "line": "16"
+      }
+    },
+    {
+      "id": "line16.month1",
+      "kind": "text",
+      "page": 1,
+      "box": [230.4, 186.0, 128.85, 14.0],
+      "layout": {
+        "mode": "split",
+        "segments": [
+          { "id": "dollars", "align": "right", "pad": { "right": 4 }, "part": "integer", "w": 100.8 },
+          { "id": "point", "w": 7.2 },
+          { "id": "cents", "align": "center", "pad": 0, "part": "fraction", "w": 20.85 }
+        ]
+      },
+      "style": "money",
+      "format": "usdCents",
+      "bind": "$.part2.line16.monthlyLiability.month1",
+      "when": "$.part2.line16.depositSchedule == \"MONTHLY\"",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f2_1[0]+f2_2[0]",
+        "label": "Tax liability: Month 1",
+        "line": "16"
+      }
+    },
+    {
+      "id": "line16.month2",
+      "kind": "text",
+      "page": 1,
+      "box": [230.4, 208.0, 128.85, 14.0],
+      "layout": {
+        "mode": "split",
+        "segments": [
+          { "id": "dollars", "align": "right", "pad": { "right": 4 }, "part": "integer", "w": 100.8 },
+          { "id": "point", "w": 7.2 },
+          { "id": "cents", "align": "center", "pad": 0, "part": "fraction", "w": 20.85 }
+        ]
+      },
+      "style": "money",
+      "format": "usdCents",
+      "bind": "$.part2.line16.monthlyLiability.month2",
+      "when": "$.part2.line16.depositSchedule == \"MONTHLY\"",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f2_3[0]+f2_4[0]",
+        "label": "Tax liability: Month 2",
+        "line": "16"
+      }
+    },
+    {
+      "id": "line16.month3",
+      "kind": "text",
+      "page": 1,
+      "box": [230.4, 229.0, 128.85, 14.0],
+      "layout": {
+        "mode": "split",
+        "segments": [
+          { "id": "dollars", "align": "right", "pad": { "right": 4 }, "part": "integer", "w": 100.8 },
+          { "id": "point", "w": 7.2 },
+          { "id": "cents", "align": "center", "pad": 0, "part": "fraction", "w": 20.85 }
+        ]
+      },
+      "style": "money",
+      "format": "usdCents",
+      "bind": "$.part2.line16.monthlyLiability.month3",
+      "when": "$.part2.line16.depositSchedule == \"MONTHLY\"",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f2_5[0]+f2_6[0]",
+        "label": "Tax liability: Month 3",
+        "line": "16"
+      }
+    },
+    {
+      "id": "line16.totalLiability",
+      "kind": "text",
+      "page": 1,
+      "box": [230.4, 251.0, 128.85, 14.0],
+      "layout": {
+        "mode": "split",
+        "segments": [
+          { "id": "dollars", "align": "right", "pad": { "right": 4 }, "part": "integer", "w": 100.8 },
+          { "id": "point", "w": 7.2 },
+          { "id": "cents", "align": "center", "pad": 0, "part": "fraction", "w": 20.85 }
+        ]
+      },
+      "style": "money",
+      "format": "usdCents",
+      "bind": {
+        "path": "$.part2.line16.monthlyLiability[*]",
+        "transform": [
+          { "op": "sum" },
+          { "op": "round", "decimals": 2 }
+        ]
+      },
+      "when": "$.part2.line16.depositSchedule == \"MONTHLY\"",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f2_7[0]+f2_8[0]",
+        "label": "Total liability for quarter (must equal line 12)",
+        "line": "16"
+      }
+    },
+    {
+      "id": "line17.businessClosed",
+      "kind": "mark",
+      "page": 1,
+      "box": [482.4, 313.0, 10.0, 10.0],
+      "mark": {
+        "glyph": "X",
+        "inset": 1
+      },
+      "when": "$.part3.line17.businessClosed isTrue",
+      "refs": {
+        "acroField": "c2_2[0]",
+        "label": "Business closed or stopped paying wages",
+        "line": "17"
+      }
+    },
+    {
+      "id": "line17.finalWagesMonth",
+      "kind": "text",
+      "page": 1,
+      "box": [208.8, 330.0, 19.14, 14.0],
+      "style": "comb",
+      "format": "text",
+      "bind": {
+        "path": "$.part3.line17.finalWagesPaidOn",
+        "transform": [
+          { "op": "slice", "start": 5, "end": 7 }
+        ]
+      },
+      "when": "$.part3.line17.businessClosed isTrue",
+      "refs": {
+        "label": "Final date wages paid — month",
+        "line": "17",
+        "note": "One AcroForm field (f2_9[0]) spans the box; its printed slashes, measured at x 229.2 and 248.5, split it into month, day and year."
+      }
+    },
+    {
+      "id": "line17.finalWagesDay",
+      "kind": "text",
+      "page": 1,
+      "box": [230.46, 330.0, 16.8, 14.0],
+      "style": "comb",
+      "format": "text",
+      "bind": {
+        "path": "$.part3.line17.finalWagesPaidOn",
+        "transform": [
+          { "op": "slice", "start": 8, "end": 10 }
+        ]
+      },
+      "when": "$.part3.line17.businessClosed isTrue",
+      "refs": {
+        "label": "Final date wages paid — day",
+        "line": "17"
+      }
+    },
+    {
+      "id": "line17.finalWagesYear",
+      "kind": "text",
+      "page": 1,
+      "box": [249.78, 330.0, 38.22, 14.0],
+      "style": "comb",
+      "format": "text",
+      "bind": {
+        "path": "$.part3.line17.finalWagesPaidOn",
+        "transform": [
+          { "op": "slice", "start": 0, "end": 4 }
+        ]
+      },
+      "when": "$.part3.line17.businessClosed isTrue",
+      "refs": {
+        "label": "Final date wages paid — year",
+        "line": "17"
+      }
+    },
+    {
+      "id": "line18.seasonalEmployer",
+      "kind": "mark",
+      "page": 1,
+      "box": [482.4, 355.0, 10.0, 10.0],
+      "mark": {
+        "glyph": "X",
+        "inset": 1
+      },
+      "when": "$.part3.line18.seasonalEmployer isTrue",
+      "refs": {
+        "acroField": "c2_3[0]",
+        "label": "Seasonal employer",
+        "line": "18"
+      }
+    },
+    {
+      "id": "part4.designeeYes",
+      "kind": "mark",
+      "page": 1,
+      "box": [64.8, 412.0, 10.0, 10.0],
+      "mark": {
+        "glyph": "X",
+        "inset": 1
+      },
+      "when": "$.part4.thirdPartyDesignee.allowed isTrue",
+      "refs": {
+        "acroField": "c2_4[0]",
+        "label": "Third-party designee — Yes"
+      }
+    },
+    {
+      "id": "part4.designeeNo",
+      "kind": "mark",
+      "page": 1,
+      "box": [64.8, 452.0, 10.0, 10.0],
+      "mark": {
+        "glyph": "X",
+        "inset": 1
+      },
+      "when": "$.part4.thirdPartyDesignee.allowed == false",
+      "refs": {
+        "acroField": "c2_4[1]",
+        "label": "Third-party designee — No",
+        "note": "An explicit false, not isFalse: a missing answer must not tick No."
+      }
+    },
+    {
+      "id": "part4.designeeName",
+      "kind": "text",
+      "page": 1,
+      "box": [260.2, 408.0, 171.8, 14.0],
+      "style": "entry",
+      "format": "text",
+      "bind": "$.part4.thirdPartyDesignee.name",
+      "when": "$.part4.thirdPartyDesignee.allowed isTrue",
+      "refs": {
+        "acroField": "f2_10[0]",
+        "label": "Designee's name"
+      }
+    },
+    {
+      "id": "part4.designeePhone",
+      "kind": "text",
+      "page": 1,
+      "box": [460.8, 408.0, 108.0, 14.0],
+      "style": "entry",
+      "format": "text",
+      "bind": "$.part4.thirdPartyDesignee.phone",
+      "when": "$.part4.thirdPartyDesignee.allowed isTrue",
+      "refs": {
+        "acroField": "f2_11[0]",
+        "label": "Designee's phone number"
+      }
+    },
+    {
+      "id": "part4.designeePin",
+      "kind": "text",
+      "page": 1,
+      "box": [432.0, 432.0, 107.15, 14.0],
+      "layout": {
+        "cells": [
+          [2.8, 15.1],
+          [24.4, 15.1],
+          [46.0, 15.1],
+          [67.6, 15.1],
+          [89.2, 15.1]
+        ],
+        "mode": "comb"
+      },
+      "style": "comb",
+      "format": {
+        "length": 5,
+        "type": "digits"
+      },
+      "bind": "$.part4.thirdPartyDesignee.pin",
+      "when": "$.part4.thirdPartyDesignee.allowed isTrue",
+      "tags": [
+        "pii.pin"
+      ],
+      "refs": {
+        "acroField": "f2_12[0]",
+        "label": "Designee's 5-digit PIN",
+        "note": "Cells measured from the five drawn squares; the widget rectangle is wider than the squares it covers."
+      }
+    },
+    {
+      "id": "part5.signature",
+      "kind": "image",
+      "page": 1,
+      "box": [108.0, 510.0, 216.0, 42.0],
+      "bind": "$.part5.signer.signatureHref",
+      "when": "$.part5.signer.signatureHref exists",
+      "fit": "contain",
+      "refs": {
+        "label": "Sign your name here",
+        "note": "Derived from the artwork: the drawn signature box has no widget."
+      }
+    },
+    {
+      "id": "part5.printedName",
+      "kind": "text",
+      "page": 1,
+      "box": [389.8, 510.0, 179.0, 14.0],
+      "style": "entry",
+      "format": "upperText",
+      "bind": {
+        "required": true,
+        "path": "$.part5.signer.name"
+      },
+      "refs": {
+        "acroField": "f2_13[0]",
+        "label": "Print your name here"
+      }
+    },
+    {
+      "id": "part5.title",
+      "kind": "text",
+      "page": 1,
+      "box": [389.8, 534.0, 179.0, 14.0],
+      "style": "entry",
+      "format": "upperText",
+      "bind": {
+        "required": true,
+        "path": "$.part5.signer.title"
+      },
+      "refs": {
+        "acroField": "f2_14[0]",
+        "label": "Print your title here"
+      }
+    },
+    {
+      "id": "part5.dateMonth",
+      "kind": "text",
+      "page": 1,
+      "box": [108.0, 564.0, 23.7, 15.0],
+      "style": "comb",
+      "format": "text",
+      "bind": {
+        "required": true,
+        "path": "$.part5.signer.signedOn",
+        "transform": [
+          { "op": "slice", "start": 5, "end": 7 }
+        ]
+      },
+      "refs": {
+        "label": "Date signed — month",
+        "note": "Derived from the artwork: no widget. The printed slashes, measured at x 133.0 and 152.4, split the box into month, day and year."
+      }
+    },
+    {
+      "id": "part5.dateDay",
+      "kind": "text",
+      "page": 1,
+      "box": [134.22, 564.0, 16.92, 15.0],
+      "style": "comb",
+      "format": "text",
+      "bind": {
+        "required": true,
+        "path": "$.part5.signer.signedOn",
+        "transform": [
+          { "op": "slice", "start": 8, "end": 10 }
+        ]
+      },
+      "refs": {
+        "label": "Date signed — day",
+        "note": "Derived from the artwork; see part5.dateMonth."
+      }
+    },
+    {
+      "id": "part5.dateYear",
+      "kind": "text",
+      "page": 1,
+      "box": [153.66, 564.0, 33.54, 15.0],
+      "style": "comb",
+      "format": "text",
+      "bind": {
+        "required": true,
+        "path": "$.part5.signer.signedOn",
+        "transform": [
+          { "op": "slice", "start": 0, "end": 4 }
+        ]
+      },
+      "refs": {
+        "label": "Date signed — year",
+        "note": "Derived from the artwork; see part5.dateMonth."
+      }
+    },
+    {
+      "id": "part5.phone",
+      "kind": "text",
+      "page": 1,
+      "box": [424.8, 564.0, 144.0, 14.0],
+      "style": "entry",
+      "format": "text",
+      "bind": "$.part5.signer.phone",
+      "refs": {
+        "acroField": "f2_15[0]",
+        "label": "Best daytime phone"
+      }
+    },
+    {
+      "id": "paidPreparer.selfEmployed",
+      "kind": "mark",
+      "page": 1,
+      "box": [558.8, 595.0, 10.0, 10.0],
+      "mark": {
+        "glyph": "X",
+        "inset": 1
+      },
+      "when": "$.paidPreparer.selfEmployed isTrue",
+      "refs": {
+        "acroField": "c2_5[0]",
+        "label": "Paid preparer is self-employed"
+      }
+    },
+    {
+      "id": "paidPreparer.name",
+      "kind": "text",
+      "page": 1,
+      "box": [123.4, 612.0, 258.2, 14.0],
+      "style": "entry",
+      "format": "upperText",
+      "bind": "$.paidPreparer.name",
+      "when": "$.paidPreparer exists",
+      "refs": {
+        "acroField": "f2_16[0]",
+        "label": "Preparer's name"
+      }
+    },
+    {
+      "id": "paidPreparer.ptin",
+      "kind": "text",
+      "page": 1,
+      "box": [446.4, 612.0, 122.4, 14.0],
+      "style": "entry",
+      "format": "text",
+      "bind": "$.paidPreparer.ptin",
+      "when": "$.paidPreparer exists",
+      "refs": {
+        "acroField": "f2_17[0]",
+        "label": "PTIN"
+      }
+    },
+    {
+      "id": "paidPreparer.signature",
+      "kind": "image",
+      "page": 1,
+      "box": [122.4, 636.0, 259.2, 15.0],
+      "bind": "$.paidPreparer.signatureHref",
+      "when": "$.paidPreparer.signatureHref exists",
+      "fit": "contain",
+      "refs": {
+        "label": "Preparer's signature",
+        "note": "Derived from the artwork: the drawn signature box has no widget."
+      }
+    },
+    {
+      "id": "paidPreparer.dateMonth",
+      "kind": "text",
+      "page": 1,
+      "box": [446.4, 636.0, 26.94, 15.0],
+      "style": "comb",
+      "format": "text",
+      "bind": {
+        "path": "$.paidPreparer.signedOn",
+        "transform": [
+          { "op": "slice", "start": 5, "end": 7 }
+        ]
+      },
+      "when": "$.paidPreparer.signedOn exists",
+      "refs": {
+        "label": "Preparer's date — month",
+        "note": "Derived from the artwork: no widget. The printed slashes, measured at x 474.6 and 496.3, split the box into month, day and year."
+      }
+    },
+    {
+      "id": "paidPreparer.dateDay",
+      "kind": "text",
+      "page": 1,
+      "box": [475.86, 636.0, 19.2, 15.0],
+      "style": "comb",
+      "format": "text",
+      "bind": {
+        "path": "$.paidPreparer.signedOn",
+        "transform": [
+          { "op": "slice", "start": 8, "end": 10 }
+        ]
+      },
+      "when": "$.paidPreparer.signedOn exists",
+      "refs": {
+        "label": "Preparer's date — day",
+        "note": "Derived from the artwork; see paidPreparer.dateMonth."
+      }
+    },
+    {
+      "id": "paidPreparer.dateYear",
+      "kind": "text",
+      "page": 1,
+      "box": [497.58, 636.0, 35.22, 15.0],
+      "style": "comb",
+      "format": "text",
+      "bind": {
+        "path": "$.paidPreparer.signedOn",
+        "transform": [
+          { "op": "slice", "start": 0, "end": 4 }
+        ]
+      },
+      "when": "$.paidPreparer.signedOn exists",
+      "refs": {
+        "label": "Preparer's date — year",
+        "note": "Derived from the artwork; see paidPreparer.dateMonth."
+      }
+    },
+    {
+      "id": "paidPreparer.firmName",
+      "kind": "text",
+      "page": 1,
+      "box": [123.4, 660.0, 258.2, 14.0],
+      "style": "entry",
+      "format": "upperText",
+      "bind": "$.paidPreparer.firm.name",
+      "when": "$.paidPreparer exists",
+      "refs": {
+        "acroField": "f2_18[0]",
+        "label": "Firm's name (or yours if self-employed)"
+      }
+    },
+    {
+      "id": "paidPreparer.firmEin",
+      "kind": "text",
+      "page": 1,
+      "box": [446.4, 660.0, 122.4, 14.0],
+      "style": "entry",
+      "format": "text",
+      "bind": "$.paidPreparer.firm.ein",
+      "when": "$.paidPreparer exists",
+      "refs": {
+        "acroField": "f2_19[0]",
+        "label": "Firm's EIN"
+      }
+    },
+    {
+      "id": "paidPreparer.firmAddress",
+      "kind": "text",
+      "page": 1,
+      "box": [123.4, 684.0, 258.2, 14.0],
+      "style": "entry",
+      "format": "upperText",
+      "bind": "$.paidPreparer.firm.address.street",
+      "when": "$.paidPreparer exists",
+      "refs": {
+        "acroField": "f2_20[0]",
+        "label": "Firm's address"
+      }
+    },
+    {
+      "id": "paidPreparer.firmPhone",
+      "kind": "text",
+      "page": 1,
+      "box": [446.4, 684.0, 122.4, 14.0],
+      "style": "entry",
+      "format": "text",
+      "bind": "$.paidPreparer.firm.phone",
+      "when": "$.paidPreparer exists",
+      "refs": {
+        "acroField": "f2_21[0]",
+        "label": "Firm's phone"
+      }
+    },
+    {
+      "id": "paidPreparer.firmCity",
+      "kind": "text",
+      "page": 1,
+      "box": [123.4, 708.0, 179.0, 14.0],
+      "style": "entry",
+      "format": "upperText",
+      "bind": "$.paidPreparer.firm.address.city",
+      "when": "$.paidPreparer exists",
+      "refs": {
+        "acroField": "f2_22[0]",
+        "label": "Firm's city"
+      }
+    },
+    {
+      "id": "paidPreparer.firmState",
+      "kind": "text",
+      "page": 1,
+      "box": [345.6, 708.0, 36.0, 14.0],
+      "style": "entryCentered",
+      "format": "stateCode",
+      "bind": "$.paidPreparer.firm.address.state",
+      "when": "$.paidPreparer exists",
+      "refs": {
+        "acroField": "f2_23[0]",
+        "label": "Firm's state"
+      }
+    },
+    {
+      "id": "paidPreparer.firmZip",
+      "kind": "text",
+      "page": 1,
+      "box": [446.4, 708.0, 122.4, 14.0],
+      "style": "entry",
+      "format": "zip",
+      "bind": "$.paidPreparer.firm.address.zip",
+      "when": "$.paidPreparer exists",
+      "refs": {
+        "acroField": "f2_24[0]",
+        "label": "Firm's ZIP code"
+      }
+    }
+  ]
+}

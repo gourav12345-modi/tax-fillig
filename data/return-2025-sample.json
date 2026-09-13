@@ -1,0 +1,307 @@
+{
+  "$comment": "A 2025 individual return as a tax engine would hand it to a renderer: source documents as received, plus the engine's computed line values. TFA bindings reach into both.",
+  "meta": {
+    "returnId": "ret_01JQ8XK2M9",
+    "taxYear": 2025,
+    "jurisdiction": "US-IRS",
+    "preparedOn": "2026-03-02",
+    "engineVersion": "calc-2025.4.1"
+  },
+
+  "taxpayer": {
+    "primary": {
+      "name": { "first": "Daniel", "middleInitial": "R", "firstAndInitial": "Daniel R", "last": "Whitfield", "full": "Daniel R Whitfield" },
+      "ssn": "412-55-7801",
+      "dateOfBirth": "1981-06-14",
+      "occupation": "Software Engineer",
+      "identityProtectionPin": "483920"
+    },
+    "spouse": {
+      "name": { "first": "Priya N", "last": "Whitfield", "full": "Priya N Whitfield" },
+      "ssn": "398-64-2210",
+      "dateOfBirth": "1983-11-02",
+      "occupation": "Physician Assistant"
+    },
+    "address": {
+      "street": "1487 Meridian Way",
+      "apartment": "4C",
+      "city": "Cedar Park",
+      "state": "TX",
+      "zip": "78613",
+      "country": "US"
+    },
+    "contact": { "phone": "512-555-0184", "email": "daniel.whitfield@example.com" }
+  },
+
+  "return": {
+    "filingStatus": "MFJ",
+    "mainHomeInUS": true,
+    "presidentialElectionCampaign": { "taxpayer": true, "spouse": true },
+    "digitalAssets": { "hadActivity": false },
+    "someoneCanClaim": { "taxpayer": false, "spouse": false },
+    "ageBlind": {
+      "taxpayer": { "age65OrOlder": false, "blind": false },
+      "spouse": { "age65OrOlder": false, "blind": false }
+    },
+    "dependents": [
+      { "name": { "first": "Amelia", "last": "Whitfield" }, "ssn": "512-88-3049", "relationship": "Daughter",
+        "dateOfBirth": "2012-04-08", "livedWithYouMoreThanHalfYear": true, "residedInUS": true,
+        "fullTimeStudent": false, "permanentlyAndTotallyDisabled": false, "credit": "CTC" },
+      { "name": { "first": "Julian", "last": "Whitfield" }, "ssn": "512-88-3050", "relationship": "Son",
+        "dateOfBirth": "2014-09-21", "livedWithYouMoreThanHalfYear": true, "residedInUS": true,
+        "fullTimeStudent": false, "permanentlyAndTotallyDisabled": false, "credit": "CTC" },
+      { "name": { "first": "Noah", "last": "Whitfield" }, "ssn": "512-88-3051", "relationship": "Son",
+        "dateOfBirth": "2017-01-30", "livedWithYouMoreThanHalfYear": true, "residedInUS": true,
+        "fullTimeStudent": false, "permanentlyAndTotallyDisabled": false, "credit": "CTC" },
+      { "name": { "first": "Margaret", "last": "Okonkwo" }, "ssn": "419-72-6633", "relationship": "Mother",
+        "dateOfBirth": "1949-03-17", "livedWithYouMoreThanHalfYear": true, "residedInUS": true,
+        "fullTimeStudent": false, "permanentlyAndTotallyDisabled": false, "credit": "ODC" },
+      { "name": { "first": "Elias", "last": "Whitfield" }, "ssn": "512-88-3052", "relationship": "Son",
+        "dateOfBirth": "2004-07-11", "livedWithYouMoreThanHalfYear": true, "residedInUS": true,
+        "fullTimeStudent": true, "permanentlyAndTotallyDisabled": false, "credit": "ODC" }
+    ],
+    "income": {
+      "householdEmployeeWages": null,
+      "tipIncomeNotReported": null,
+      "medicaidWaiverPayments": null,
+      "taxableDependentCareBenefits": null,
+      "employerAdoptionBenefits": null,
+      "wagesFrom8919": null,
+      "otherEarnedIncome": { "description": null, "amount": null },
+      "nontaxableCombatPayElection": null
+    },
+    "payments": {
+      "estimatedTaxPayments": 16000,
+      "withholding": { "form1099": null, "otherForms": null }
+    },
+    "refund": {
+      "amountRefunded": 1153,
+      "appliedToNextYear": 1000,
+      "directDeposit": { "routingNumber": "121000248", "accountNumber": "9384726150", "accountType": "CHECKING" }
+    },
+    "thirdPartyDesignee": { "authorized": false }
+  },
+
+  "documents": {
+    "$comment": "W-2 boxes 3 and 5 include the 401(k) deferral, which Social Security and Medicare still tax. Both 1099-Rs are beneficiary distributions (code 4), so the recipients' ages trigger no 10% additional tax.",
+    "formW2": [
+      { "employee": "SPOUSE", "employer": { "name": "St. Brigid Regional Health", "ein": "81-5567210" },
+        "box1": { "wagesTipsOtherComp": 128400.00 },
+        "box2": { "federalIncomeTaxWithheld": 18260.00 },
+        "box3": { "socialSecurityWages": 151400.00 },
+        "box5": { "medicareWagesAndTips": 151400.00 },
+        "box12": [ { "code": "D", "amount": 23000.00 } ] },
+      { "employee": "TAXPAYER", "employer": { "name": "Lumenpath Systems, Inc.", "ein": "74-2938471" },
+        "box1": { "wagesTipsOtherComp": 61120.50 },
+        "box2": { "federalIncomeTaxWithheld": 7415.00 },
+        "box3": { "socialSecurityWages": 61120.50 },
+        "box5": { "medicareWagesAndTips": 61120.50 },
+        "box12": [] }
+    ],
+    "form1099Int": [
+      { "payer": { "name": "Cedar Park Credit Union" }, "box1": { "interestIncome": 1204.36 }, "box8": { "taxExemptInterest": 0 } },
+      { "payer": { "name": "Travis County Municipal Bond Fund" }, "box1": { "interestIncome": 0 }, "box8": { "taxExemptInterest": 640.00 } }
+    ],
+    "form1099Div": [
+      { "payer": { "name": "Harborline Index Fund" }, "box1a": { "ordinaryDividends": 3120.11 }, "box1b": { "qualifiedDividends": 2480.00 } },
+      { "payer": { "name": "Northgate Dividend Trust" }, "box1a": { "ordinaryDividends": 862.00 }, "box1b": { "qualifiedDividends": 630.00 } }
+    ],
+    "form1099R": [
+      { "payer": { "name": "Vantage Retirement Services" }, "distributionType": "IRA",
+        "box1": { "grossDistribution": 12000.00 }, "box2a": { "taxableAmount": 12000.00 }, "box7": { "distributionCode": "4" } },
+      { "payer": { "name": "Texas Teachers Annuity" }, "distributionType": "PENSION",
+        "box1": { "grossDistribution": 8400.00 }, "box2a": { "taxableAmount": 8400.00 }, "box7": { "distributionCode": "4" } }
+    ],
+    "form1099Misc": [],
+    "formSSA1099": null
+  },
+
+  "schedules": {
+    "schedule1": { "line10": { "additionalIncome": 56750 }, "line26": { "adjustmentsToIncome": 4009 } },
+    "schedule1A": { "line38": { "additionalDeductions": 0 } },
+    "schedule2": {
+      "$comment": "Line 21 = self-employment tax 8,019 + Additional Medicare Tax 134 (Form 8959: Medicare wages 212,520.50 plus self-employment earnings 52,409 exceed the $250,000 joint threshold) + Net Investment Income Tax 83 (Form 8960: 3.8% of net investment income 2,186, which is less than the 14,848 of MAGI above $250,000).",
+      "line3": { "additionalTax": 0 },
+      "line4": { "selfEmploymentTax": 8019 },
+      "line11": { "additionalMedicareTax": 134 },
+      "line12": { "netInvestmentIncomeTax": 83 },
+      "line21": { "otherTaxes": 8236 }
+    },
+    "schedule3": { "line8": { "nonrefundableCredits": 0 }, "line15": { "otherPayments": 0 } },
+    "scheduleC": [
+      {
+        "proprietor": { "name": "Daniel R Whitfield", "ssn": "412-55-7801" },
+        "business": {
+          "name": "Whitfield Analytics",
+          "principalActivity": "Data analytics consulting",
+          "code": "541511",
+          "ein": "47-8829135",
+          "address": { "street": "1487 Meridian Way", "cityStateZip": "Cedar Park, TX 78613" },
+          "accountingMethod": "CASH",
+          "materiallyParticipated": true,
+          "startedOrAcquiredThisYear": false,
+          "$comment": "Contract labor ($9,600) and rent ($7,200) require Forms 1099-NEC and 1099-MISC, so lines I and J are both Yes.",
+          "madeReportablePayments": true,
+          "requiredToFile1099": true
+        },
+        "income": { "grossReceipts": 108459.00, "returnsAndAllowances": 0, "costOfGoodsSold": 0, "otherIncome": 0 },
+        "expenses": {
+          "advertising": 2140.00,
+          "carAndTruck": 4319.00,
+          "commissionsAndFees": 0,
+          "contractLabor": 9600.00,
+          "depletion": 0,
+          "depreciation": 3125.00,
+          "employeeBenefitPrograms": 0,
+          "insuranceOtherThanHealth": 1860.00,
+          "interestMortgage": 0,
+          "interestOther": 412.00,
+          "legalAndProfessional": 2750.00,
+          "officeExpense": 1985.40,
+          "pensionAndProfitSharing": 0,
+          "rentVehiclesMachinery": 0,
+          "rentOtherBusinessProperty": 7200.00,
+          "repairsAndMaintenance": 640.00,
+          "supplies": 1490.25,
+          "taxesAndLicenses": 830.00,
+          "travel": 3260.00,
+          "deductibleMeals": 918.00,
+          "utilities": 2410.00,
+          "wages": 0
+        },
+        "otherExpenses": [
+          { "description": "Cloud compute and storage (AWS)", "amount": 6840.00 },
+          { "description": "Software subscriptions", "amount": 3120.00 },
+          { "description": "Professional dues and memberships", "amount": 640.00 },
+          { "description": "Continuing education and certification", "amount": 1875.00 },
+          { "description": "Business insurance rider — cyber liability", "amount": 950.00 },
+          { "description": "Merchant processing fees", "amount": 1284.60 },
+          { "description": "Data subscriptions and market feeds", "amount": 2400.00 },
+          { "description": "Bank service charges", "amount": 218.00 },
+          { "description": "Postage and shipping", "amount": 146.75 },
+          { "description": "Client research and survey panel costs", "amount": 1730.00 },
+          { "description": "Security audit and penetration testing", "amount": 2250.00 },
+          { "description": "Trade show booth and materials", "amount": 1615.40 }
+        ],
+        "homeOffice": { "usesSimplifiedMethod": true, "totalHomeSquareFeet": 2200, "businessSquareFeet": 240, "deduction": 1200.00 },
+        "vehicle": {
+          "placedInService": "2023-02-15",
+          "$comment": "Line 9 uses the 2025 standard mileage rate: 6,170 business miles × $0.70 = $4,319.00.",
+          "miles": { "business": 6170, "commuting": 0, "other": 3610 },
+          "availableForPersonalUse": true,
+          "hasAnotherVehicleForPersonal": true,
+          "hasEvidence": true,
+          "evidenceIsWritten": true
+        },
+        "atRisk": "ALL",
+        "computed": {
+          "line3": { "netReceipts": 108459.00 },
+          "line5": { "grossProfit": 108459.00 },
+          "grossIncome": 108459.00,
+          "totalExpenses": 66009.40,
+          "tentativeProfit": 42449.60,
+          "netProfit": 41249.60
+        }
+      }
+      ,{
+        "proprietor": { "name": "Daniel R Whitfield", "ssn": "412-55-7801" },
+        "business": {
+          "name": "Meridian Field Notes",
+          "principalActivity": "Freelance photography and writing",
+          "code": "541920",
+          "ein": null,
+          "address": { "street": "1487 Meridian Way", "cityStateZip": "Cedar Park, TX 78613" },
+          "accountingMethod": "CASH",
+          "materiallyParticipated": true,
+          "startedOrAcquiredThisYear": false,
+          "madeReportablePayments": false,
+          "requiredToFile1099": false
+        },
+        "income": { "grossReceipts": 24800.00, "returnsAndAllowances": 0, "costOfGoodsSold": 0, "otherIncome": 0 },
+        "expenses": {
+          "advertising": 480.00,
+          "carAndTruck": 1239.70,
+          "depreciation": 2100.00,
+          "officeExpense": 615.00,
+          "supplies": 1385.00,
+          "travel": 2260.00,
+          "deductibleMeals": 420.00
+        },
+        "otherExpenses": [
+          { "description": "Stock image licensing", "amount": 560.00 },
+          { "description": "Equipment rental", "amount": 240.00 }
+        ],
+        "homeOffice": { "usesSimplifiedMethod": false, "deduction": 0 },
+        "vehicle": {
+          "placedInService": "2024-06-01",
+          "$comment": "Line 9 uses the 2025 standard mileage rate: 1,771 business miles × $0.70 = $1,239.70.",
+          "miles": { "business": 1771, "commuting": 0, "other": 5400 },
+          "availableForPersonalUse": true,
+          "hasAnotherVehicleForPersonal": true,
+          "hasEvidence": true,
+          "evidenceIsWritten": false
+        },
+        "atRisk": "ALL",
+        "computed": {
+          "line3": { "netReceipts": 24800.00 },
+          "line5": { "grossProfit": 24800.00 },
+          "grossIncome": 24800.00,
+          "totalExpenses": 9299.70,
+          "tentativeProfit": 15500.30,
+          "netProfit": 15500.30
+        }
+      }
+    ]
+  },
+
+  "computed": {
+    "line1z": { "totalWages": 189521 },
+    "line4b": { "iraTaxableAmount": 12000 },
+    "line5b": { "pensionsTaxableAmount": 8400 },
+    "line6b": { "socialSecurityTaxableAmount": null },
+    "line7a": { "capitalGainOrLoss": -3000 },
+    "line9": { "totalIncome": 268857 },
+    "line11a": { "adjustedGrossIncome": 264848 },
+    "line12e": { "standardOrItemizedDeduction": 31500 },
+    "line13a": { "qualifiedBusinessIncomeDeduction": 10548 },
+    "line14": { "totalDeductions": 42048 },
+    "line15": { "taxableIncome": 222800 },
+    "line16": { "tax": 38886 },
+    "line18": { "taxPlusSchedule2": 38886 },
+    "line19": { "childTaxCreditOrODC": 7600 },
+    "line21": { "totalCredits": 7600 },
+    "line22": { "taxLessCredits": 31286 },
+    "line24": { "totalTax": 39522 },
+    "line25d": { "totalWithholding": 25675 },
+    "line27a": { "earnedIncomeCredit": null },
+    "line28": { "additionalChildTaxCredit": null },
+    "line29": { "americanOpportunityCredit": null },
+    "line30": { "refundableAdoptionCredit": null },
+    "line32": { "totalOtherPayments": 0 },
+    "line33": { "totalPayments": 41675 },
+    "line34": { "overpaid": 2153 },
+    "line37": { "amountYouOwe": 0 },
+    "line38": { "estimatedTaxPenalty": null }
+  },
+
+  "filing": {
+    "signatures": {
+      "taxpayer": { "signedOn": "2026-03-04", "imageHref": null },
+      "spouse": { "signedOn": "2026-03-04", "imageHref": null }
+    }
+  },
+
+  "preparer": {
+    "name": "Jordan A. Rivera",
+    "ptin": "P01234567",
+    "selfEmployed": false,
+    "signedOn": "2026-03-04",
+    "signatureHref": null,
+    "firm": {
+      "name": "Instead Tax Advisors, LLC",
+      "phone": "415-555-0110",
+      "address": "88 Kearny St, Suite 900, San Francisco, CA 94108",
+      "ein": "87-1234567"
+    }
+  }
+}

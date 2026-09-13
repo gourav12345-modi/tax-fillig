@@ -1,0 +1,44 @@
+{
+  "$schema": "../schema/tfa-1.0.schema.json",
+  "$comment": "A year rollover. Forms change a little every year and their geometry drifts, but the overwhelming majority of an annotation survives. Rather than copy 112 fields, inherit them and state only what changed. This file is deliberately incomplete, and `tfa lint` reports exactly what is still wrong with it: the media checksum is not pinned to a published PDF, and the line 12e move introduced a box collision with line 13a. Both are the kind of mistake a rollover makes, and both are caught before anything is filed.",
+
+  "tfa": "1.0",
+  "id": "us.irs.1040:2026",
+  "version": "0.1.0-draft",
+  "extends": "./us-irs-1040-2025.tfa.json",
+
+  "form": {
+    "taxYear": 2026,
+    "revision": "unreleased"
+  },
+
+  "media": {
+    "uri": "https://www.irs.gov/pub/irs-pdf/f1040.pdf",
+    "sha256": null
+  },
+
+  "adjust": {
+    "$comment": "The IRS reflowed page 2 by 1.5pt when it reset the type. One line here beats re-measuring sixty boxes; every box on that page moves, including the ones inside repeats and choices.",
+    "pages": {
+      "1": { "dx": 0, "dy": 1.5 }
+    }
+  },
+
+  "fields": [
+    {
+      "$comment": "Line 12e moved down one row when line 12d gained a checkbox. Only the geometry changed, so only the geometry is restated — the binding, format, style, tags and refs are all inherited.",
+      "id": "line12e",
+      "box": [504, 109.5, 72, 12]
+    },
+    {
+      "$comment": "Schedule 1-A was folded back into Schedule 1, so line 13b is gone from the form.",
+      "id": "line13b",
+      "$op": "remove"
+    },
+    {
+      "$comment": "A binding can be repointed without touching anything else — here the standard deduction moved in the engine's output.",
+      "id": "line14",
+      "bind": "$.computed.line14.totalDeductionsV2"
+    }
+  ]
+}

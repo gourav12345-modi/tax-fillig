@@ -1,0 +1,177 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://instead.com/schemas/print-plan-1.0.schema.json",
+  "title": "TFA Print Plan 1.0",
+  "description": "The output of applying an annotation to a return data set: absolute, pre-measured drawing instructions. Everything tax-specific has already happened. A renderer that can draw text, a few line segments and an image can consume this without knowing what a 1040 is.",
+  "type": "object",
+  "required": ["printPlan", "pages"],
+  "additionalProperties": false,
+
+  "properties": {
+    "printPlan": { "const": "1.0" },
+    "generatedAt": { "type": "string", "format": "date-time" },
+    "source": {
+      "type": "object",
+      "description": "Provenance: which annotation, at which version, against which artwork.",
+      "properties": {
+        "annotation": { "type": "string", "description": "`id@version` of the annotation used." },
+        "inheritedFrom": { "type": "array", "items": { "type": "string" } },
+        "form": {
+          "type": "object",
+          "properties": { "number": { "type": "string" }, "taxYear": { "type": "integer" }, "revision": { "type": "string" } }
+        },
+        "media": {
+          "type": "object",
+          "properties": { "uri": { "type": "string" }, "sha256": { "type": ["string", "null"] } },
+          "description": "The renderer MUST refuse to stamp a PDF whose hash differs from a non-null `sha256`."
+        }
+      }
+    },
+    "profile": { "type": ["string", "null"] },
+    "instance": {
+      "type": ["object", "null"],
+      "description": "Which element of a repeated form this plan is for, when the annotation declares `instance`.",
+      "properties": { "path": { "type": "string" }, "index": { "type": "integer" }, "count": { "type": "integer" } }
+    },
+    "units": { "enum": ["pt", "mm", "in"] },
+
+    "pages": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["index", "width", "height", "ops"],
+        "additionalProperties": false,
+        "properties": {
+          "index": { "type": "integer", "minimum": 0 },
+          "width": { "type": "number" },
+          "height": { "type": "number" },
+          "origin": { "enum": ["top-left", "bottom-left"] },
+          "ops": { "type": "array", "items": { "$ref": "#/$defs/op" } }
+        }
+      }
+    },
+
+    "statements": {
+      "type": "array",
+      "description": "Rows that did not fit their printed slots. The integrator prints these on a continuation sheet; the plan does not invent one.",
+      "items": {
+        "type": "object",
+        "required": ["id", "fieldId", "items"],
+        "properties": {
+          "id": { "type": "string" },
+          "title": { "type": "string" },
+          "fieldId": { "type": "string" },
+          "items": { "type": "array" }
+        }
+      }
+    },
+
+    "diagnostics": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["severity", "code", "message"],
+        "properties": {
+          "severity": { "enum": ["error", "warning", "info"] },
+          "code": { "type": "string" },
+          "fieldId": { "type": ["string", "null"] },
+          "message": { "type": "string" },
+          "path": { "type": "string" },
+          "value": {}
+        }
+      }
+    },
+
+    "trace": {
+      "type": "array",
+      "description": "One entry per printed value: which box, which line of the form, which path in the data, the raw value and the printed string. This is what makes a paper return explainable and diffable.",
+      "items": {
+        "type": "object",
+        "required": ["fieldId"],
+        "properties": {
+          "fieldId": { "type": "string" },
+          "page": { "type": "integer" },
+          "line": { "type": "string" },
+          "path": { "type": ["string", "null"] },
+          "raw": {},
+          "printed": { "type": "string" },
+          "redacted": { "type": "boolean" }
+        }
+      }
+    }
+  },
+
+  "$defs": {
+    "op": {
+      "oneOf": [
+        {
+          "type": "object",
+          "title": "text",
+          "description": "Draw `text` with its left edge at `x` and its baseline at `baseline`. Alignment and fitting are already resolved; `width` is the measured advance so a renderer can verify its own metrics.",
+          "required": ["op", "text", "x", "baseline", "font", "size"],
+          "additionalProperties": false,
+          "properties": {
+            "op": { "const": "text" },
+            "fieldId": { "type": "string" },
+            "text": { "type": "string" },
+            "x": { "type": "number" },
+            "baseline": { "type": "number" },
+            "width": { "type": "number" },
+            "font": { "type": "string" },
+            "size": { "type": "number" },
+            "scale": { "type": "number", "description": "Horizontal scale, < 1 when the string was condensed to fit." },
+            "color": { "type": "string" },
+            "letterSpacing": { "type": "number" },
+            "align": { "type": "string", "description": "Informational: the alignment that produced `x`." },
+            "rotate": { "type": "number" }
+          }
+        },
+        {
+          "type": "object",
+          "title": "mark",
+          "description": "A vector mark inside a checkbox, for renderers that prefer strokes to a glyph.",
+          "required": ["op", "shape", "x", "y", "w", "h"],
+          "additionalProperties": false,
+          "properties": {
+            "op": { "const": "mark" },
+            "fieldId": { "type": "string" },
+            "shape": { "enum": ["check", "cross", "fill"] },
+            "x": { "type": "number" }, "y": { "type": "number" },
+            "w": { "type": "number" }, "h": { "type": "number" },
+            "color": { "type": "string" },
+            "lineWidth": { "type": "number" }
+          }
+        },
+        {
+          "type": "object",
+          "title": "image",
+          "required": ["op", "href", "x", "y", "w", "h"],
+          "additionalProperties": false,
+          "properties": {
+            "op": { "const": "image" },
+            "fieldId": { "type": "string" },
+            "href": { "type": "string" },
+            "x": { "type": "number" }, "y": { "type": "number" },
+            "w": { "type": "number" }, "h": { "type": "number" },
+            "fit": { "enum": ["contain", "cover", "fill"] }
+          }
+        },
+        {
+          "type": "object",
+          "title": "barcode",
+          "required": ["op", "symbology", "data", "x", "y", "w", "h"],
+          "additionalProperties": false,
+          "properties": {
+            "op": { "const": "barcode" },
+            "fieldId": { "type": "string" },
+            "symbology": { "type": "string" },
+            "data": { "type": "string" },
+            "errorCorrection": { "type": ["string", "integer"] },
+            "x": { "type": "number" }, "y": { "type": "number" },
+            "w": { "type": "number" }, "h": { "type": "number" }
+          }
+        }
+      ]
+    }
+  }
+}

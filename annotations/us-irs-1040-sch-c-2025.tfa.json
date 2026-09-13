@@ -1,0 +1,1429 @@
+{
+  "$schema": "../schema/tfa-1.0.schema.json",
+  "tfa": "1.0",
+  "id": "us.irs.1040-schedule-c:2025",
+  "version": "1.0.0",
+  "form": {
+    "attachmentSequence": "09",
+    "authority": "US-IRS",
+    "catalog": "11334P",
+    "formNumber": "1040-SCHEDULE-C",
+    "locale": "en-US",
+    "omb": "1545-0074",
+    "revision": "2025-04-03",
+    "taxYear": 2025,
+    "title": "Schedule C (Form 1040) — Profit or Loss From Business"
+  },
+  "instance": {
+    "required": true,
+    "description": "A return can carry one Schedule C per business. Inside this document `@` is the selected business and `$` is still the whole return, so the header can print the taxpayer's name.",
+    "path": "$.schedules.scheduleC"
+  },
+  "media": {
+    "origin": "top-left",
+    "pageCount": 2,
+    "pages": [
+      {
+        "height": 792,
+        "index": 0,
+        "rotate": 0,
+        "width": 612
+      },
+      {
+        "height": 792,
+        "index": 1,
+        "rotate": 0,
+        "width": 612
+      }
+    ],
+    "sha256": "ddf401dbe060467d39f90ad2abf645df1de31512821a150dc68a3882bbf19716",
+    "units": "pt",
+    "uri": "https://www.irs.gov/pub/irs-pdf/f1040sc.pdf"
+  },
+  "fonts": {
+    "sans": {
+      "base14": "Helvetica",
+      "bold": "Helvetica-Bold",
+      "family": "Helvetica",
+      "italic": "Helvetica-Oblique"
+    }
+  },
+  "defaults": {
+    "style": {
+      "align": "left",
+      "color": "#000000",
+      "font": "sans",
+      "size": 9,
+      "valign": "middle"
+    },
+    "format": {
+      "type": "text"
+    }
+  },
+  "styles": {
+    "comb": {
+      "align": "center",
+      "pad": 0,
+      "size": 9
+    },
+    "entry": {
+      "fit": {
+        "min": 6,
+        "mode": "shrink"
+      },
+      "pad": {
+        "left": 3,
+        "right": 3
+      }
+    },
+    "money": {
+      "fit": {
+        "min": 6.5,
+        "mode": "shrink"
+      },
+      "align": "right",
+      "pad": {
+        "right": 5
+      }
+    }
+  },
+  "formats": {
+    "businessCode": {
+      "length": 6,
+      "type": "digits"
+    },
+    "ein": {
+      "length": 9,
+      "mask": "##-#######",
+      "type": "digits"
+    },
+    "integer": {
+      "decimals": 0,
+      "grouping": true,
+      "type": "number",
+      "zero": "blank"
+    },
+    "ssnMasked": {
+      "length": 9,
+      "mask": "###-##-####",
+      "redactChar": "X",
+      "type": "digits"
+    },
+    "text": {
+      "type": "text"
+    },
+    "upperText": {
+      "case": "upper",
+      "type": "text"
+    },
+    "wholeUSD": {
+      "decimals": 0,
+      "grouping": true,
+      "negative": "parens",
+      "null": "blank",
+      "rounding": "half-up",
+      "type": "number",
+      "zero": "blank"
+    }
+  },
+  "profiles": {
+    "client": {
+      "description": "The taxpayer's copy, with identifiers masked.",
+      "redact": [
+        {
+          "mode": "last4",
+          "select": "tag:pii.ssn"
+        }
+      ]
+    },
+    "filing": {
+      "description": "The copy that goes to the IRS."
+    }
+  },
+  "fields": [
+    {
+      "id": "proprietor.name",
+      "kind": "text",
+      "page": 0,
+      "box": [36.0, 94.0, 409.6, 14.0],
+      "style": "entry",
+      "format": "upperText",
+      "bind": "$.taxpayer.primary.name.full",
+      "refs": {
+        "acroField": "f1_1[0]",
+        "label": "Name of proprietor"
+      }
+    },
+    {
+      "id": "proprietor.ssn",
+      "kind": "text",
+      "page": 0,
+      "box": [446.4, 94.0, 129.6, 13.0],
+      "style": "entry",
+      "format": "ssnMasked",
+      "bind": {
+        "required": true,
+        "fallback": [
+          "$.taxpayer.primary.ssn"
+        ],
+        "path": "@.proprietor.ssn"
+      },
+      "tags": [
+        "pii.ssn"
+      ],
+      "refs": {
+        "acroField": "f1_2[0]",
+        "label": "Social security number (SSN)"
+      }
+    },
+    {
+      "id": "business.principalActivity",
+      "kind": "text",
+      "page": 0,
+      "box": [36.0, 118.0, 408.4, 14.0],
+      "style": "entry",
+      "format": "upperText",
+      "bind": "@.business.principalActivity",
+      "refs": {
+        "acroField": "f1_3[0]",
+        "label": "Principal business or profession",
+        "line": "A"
+      }
+    },
+    {
+      "id": "business.code",
+      "kind": "text",
+      "page": 0,
+      "box": [460.8, 120.0, 86.4, 11.0],
+      "layout": {
+        "cells": 6,
+        "mode": "comb"
+      },
+      "style": "comb",
+      "format": "businessCode",
+      "bind": "@.business.code",
+      "refs": {
+        "acroField": "f1_4[0]",
+        "label": "Enter code from instructions",
+        "line": "B"
+      }
+    },
+    {
+      "id": "business.name",
+      "kind": "text",
+      "page": 0,
+      "box": [36.0, 142.0, 409.6, 14.0],
+      "style": "entry",
+      "format": "upperText",
+      "bind": "@.business.name",
+      "refs": {
+        "acroField": "f1_5[0]",
+        "label": "Business name",
+        "line": "C"
+      }
+    },
+    {
+      "id": "business.ein",
+      "kind": "text",
+      "page": 0,
+      "box": [446.4, 142.0, 129.2, 14.0],
+      "layout": {
+        "cells": [
+          [0.0, 14.42],
+          [14.42, 14.32],
+          [28.74, 14.48],
+          [43.22, 14.4],
+          [57.62, 14.4],
+          [72.02, 14.4],
+          [86.42, 13.98],
+          [100.4, 14.4],
+          [114.8, 14.4]
+        ],
+        "mode": "comb"
+      },
+      "style": "comb",
+      "format": {
+        "length": 9,
+        "type": "digits"
+      },
+      "bind": "@.business.ein",
+      "refs": {
+        "acroField": "f1_6[0]",
+        "label": "Employer ID number (EIN)",
+        "line": "D",
+        "note": "Nine printed cells, measured at 600 dpi; the divider after the second digit is a short tick rather than a full rule."
+      }
+    },
+    {
+      "id": "business.address",
+      "kind": "text",
+      "page": 0,
+      "box": [230.4, 156.0, 345.6, 12.0],
+      "style": "entry",
+      "format": "upperText",
+      "bind": "@.business.address.street",
+      "refs": {
+        "acroField": "f1_7[0]",
+        "label": "Business address",
+        "line": "E"
+      }
+    },
+    {
+      "id": "business.cityStateZip",
+      "kind": "text",
+      "page": 0,
+      "box": [230.4, 168.0, 345.6, 12.0],
+      "style": "entry",
+      "format": "upperText",
+      "bind": "@.business.address.cityStateZip",
+      "refs": {
+        "acroField": "f1_8[0]",
+        "label": "City, town or post office, state, and ZIP code"
+      }
+    },
+    {
+      "id": "accountingMethod",
+      "kind": "choice",
+      "page": 0,
+      "options": [
+        {
+          "box": [168.8, 183.0, 8.0, 8.0],
+          "value": "CASH"
+        },
+        {
+          "box": [233.6, 183.0, 8.0, 8.0],
+          "value": "ACCRUAL"
+        },
+        {
+          "box": [305.6, 183.0, 8.0, 8.0],
+          "value": "OTHER"
+        }
+      ],
+      "mark": {
+        "glyph": "X",
+        "inset": 0.5
+      },
+      "bind": {
+        "required": true,
+        "path": "@.business.accountingMethod"
+      },
+      "refs": {
+        "label": "Accounting method",
+        "line": "F"
+      }
+    },
+    {
+      "id": "accountingMethod.other",
+      "kind": "text",
+      "page": 0,
+      "box": [374.4, 180.0, 201.6, 12.0],
+      "style": "entry",
+      "format": "upperText",
+      "bind": "@.business.accountingMethodOther",
+      "when": "@.business.accountingMethod == \"OTHER\"",
+      "refs": {
+        "acroField": "f1_9[0]",
+        "label": "Other accounting method (specify)",
+        "line": "F"
+      }
+    },
+    {
+      "id": "materiallyParticipated",
+      "kind": "choice",
+      "page": 0,
+      "options": [
+        {
+          "box": [514.4, 194.0, 8.0, 8.0],
+          "value": true
+        },
+        {
+          "box": [550.4, 194.0, 8.0, 8.0],
+          "value": false
+        }
+      ],
+      "mark": {
+        "glyph": "X",
+        "inset": 0.5
+      },
+      "bind": "@.business.materiallyParticipated",
+      "refs": {
+        "label": "Did you \"materially participate\"?",
+        "line": "G"
+      }
+    },
+    {
+      "id": "startedThisYear",
+      "kind": "mark",
+      "page": 0,
+      "box": [514.4, 206.0, 8.0, 8.0],
+      "when": "@.business.startedOrAcquiredThisYear isTrue",
+      "refs": {
+        "acroField": "c1_3[0]",
+        "label": "Started or acquired this business during 2025",
+        "line": "H"
+      }
+    },
+    {
+      "id": "madeReportablePayments",
+      "kind": "choice",
+      "page": 0,
+      "options": [
+        {
+          "box": [514.4, 218.0, 8.0, 8.0],
+          "value": true
+        },
+        {
+          "box": [550.4, 218.0, 8.0, 8.0],
+          "value": false
+        }
+      ],
+      "mark": {
+        "glyph": "X",
+        "inset": 0.5
+      },
+      "bind": "@.business.madeReportablePayments",
+      "refs": {
+        "label": "Payments requiring Form(s) 1099",
+        "line": "I"
+      }
+    },
+    {
+      "id": "willFile1099",
+      "kind": "choice",
+      "page": 0,
+      "options": [
+        {
+          "box": [514.4, 230.0, 8.0, 8.0],
+          "value": true
+        },
+        {
+          "box": [550.4, 230.0, 8.0, 8.0],
+          "value": false
+        }
+      ],
+      "mark": {
+        "glyph": "X",
+        "inset": 0.5
+      },
+      "bind": "@.business.requiredToFile1099",
+      "when": "@.business.madeReportablePayments isTrue",
+      "refs": {
+        "label": "Did you or will you file required Form(s) 1099?",
+        "line": "J",
+        "note": "Answered only when line I is Yes; otherwise both boxes stay blank."
+      }
+    },
+    {
+      "id": "line1.statutoryEmployee",
+      "kind": "mark",
+      "page": 0,
+      "box": [434.0, 266.0, 8.0, 8.0],
+      "mark": {
+        "glyph": "X",
+        "inset": 0.5
+      },
+      "when": "@.income.statutoryEmployee isTrue",
+      "refs": {
+        "acroField": "c1_6[0]",
+        "label": "Reported on Form W-2 with the Statutory employee box checked",
+        "line": "1"
+      }
+    },
+    {
+      "id": "line1",
+      "kind": "text",
+      "page": 0,
+      "box": [475.2, 264.0, 100.8, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "@.income.grossReceipts",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_10[0]",
+        "label": "Gross receipts or sales",
+        "line": "1"
+      }
+    },
+    {
+      "id": "line2",
+      "kind": "text",
+      "page": 0,
+      "box": [475.2, 276.0, 100.8, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "@.income.returnsAndAllowances",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_11[0]",
+        "label": "Returns and allowances",
+        "line": "2"
+      }
+    },
+    {
+      "id": "line3",
+      "kind": "text",
+      "page": 0,
+      "box": [475.2, 288.0, 100.8, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "@.computed.line3.netReceipts",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_12[0]",
+        "label": "Subtract line 2 from line 1",
+        "line": "3"
+      }
+    },
+    {
+      "id": "line4",
+      "kind": "text",
+      "page": 0,
+      "box": [475.2, 300.0, 100.8, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "@.income.costOfGoodsSold",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_13[0]",
+        "label": "Cost of goods sold",
+        "line": "4"
+      }
+    },
+    {
+      "id": "line5",
+      "kind": "text",
+      "page": 0,
+      "box": [475.2, 312.0, 100.8, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "@.computed.line5.grossProfit",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_14[0]",
+        "label": "Gross profit",
+        "line": "5"
+      }
+    },
+    {
+      "id": "line6",
+      "kind": "text",
+      "page": 0,
+      "box": [475.2, 324.0, 100.8, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "@.income.otherIncome",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_15[0]",
+        "label": "Other income",
+        "line": "6"
+      }
+    },
+    {
+      "id": "line7",
+      "kind": "text",
+      "page": 0,
+      "box": [475.2, 336.0, 100.8, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "@.computed.grossIncome",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_16[0]",
+        "label": "Gross income",
+        "line": "7"
+      }
+    },
+    {
+      "id": "line8",
+      "kind": "text",
+      "page": 0,
+      "box": [194.4, 360, 100.0, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "@.expenses.advertising",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_17[0]",
+        "label": "Advertising",
+        "line": "8"
+      }
+    },
+    {
+      "id": "line9",
+      "kind": "text",
+      "page": 0,
+      "box": [194.4, 384, 100.0, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "@.expenses.carAndTruck",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_18[0]",
+        "label": "Car and truck expenses",
+        "line": "9"
+      }
+    },
+    {
+      "id": "line10",
+      "kind": "text",
+      "page": 0,
+      "box": [194.4, 396, 100.0, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "@.expenses.commissionsAndFees",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_19[0]",
+        "label": "Commissions and fees",
+        "line": "10"
+      }
+    },
+    {
+      "id": "line11",
+      "kind": "text",
+      "page": 0,
+      "box": [194.4, 408, 100.0, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "@.expenses.contractLabor",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_20[0]",
+        "label": "Contract labor",
+        "line": "11"
+      }
+    },
+    {
+      "id": "line12",
+      "kind": "text",
+      "page": 0,
+      "box": [194.4, 420, 100.0, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "@.expenses.depletion",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_21[0]",
+        "label": "Depletion",
+        "line": "12"
+      }
+    },
+    {
+      "id": "line13",
+      "kind": "text",
+      "page": 0,
+      "box": [194.4, 456, 100.0, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "@.expenses.depreciation",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_22[0]",
+        "label": "Depreciation and section 179 expense deduction",
+        "line": "13"
+      }
+    },
+    {
+      "id": "line14",
+      "kind": "text",
+      "page": 0,
+      "box": [194.4, 480, 100.0, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "@.expenses.employeeBenefitPrograms",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_23[0]",
+        "label": "Employee benefit programs",
+        "line": "14"
+      }
+    },
+    {
+      "id": "line15",
+      "kind": "text",
+      "page": 0,
+      "box": [194.4, 492, 100.0, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "@.expenses.insuranceOtherThanHealth",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_24[0]",
+        "label": "Insurance (other than health)",
+        "line": "15"
+      }
+    },
+    {
+      "id": "line16a",
+      "kind": "text",
+      "page": 0,
+      "box": [194.4, 516, 100.0, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "@.expenses.interestMortgage",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_25[0]",
+        "label": "Interest — mortgage (paid to banks, etc.)",
+        "line": "16a"
+      }
+    },
+    {
+      "id": "line16b",
+      "kind": "text",
+      "page": 0,
+      "box": [194.4, 528, 100.0, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "@.expenses.interestOther",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_26[0]",
+        "label": "Interest — other",
+        "line": "16b"
+      }
+    },
+    {
+      "id": "line17",
+      "kind": "text",
+      "page": 0,
+      "box": [194.4, 540, 100.0, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "@.expenses.legalAndProfessional",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_27[0]",
+        "label": "Legal and professional services",
+        "line": "17"
+      }
+    },
+    {
+      "id": "line18",
+      "kind": "text",
+      "page": 0,
+      "box": [475.2, 360, 100.8, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "@.expenses.officeExpense",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_28[0]",
+        "label": "Office expense",
+        "line": "18"
+      }
+    },
+    {
+      "id": "line19",
+      "kind": "text",
+      "page": 0,
+      "box": [475.2, 372, 100.8, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "@.expenses.pensionAndProfitSharing",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_29[0]",
+        "label": "Pension and profit-sharing plans",
+        "line": "19"
+      }
+    },
+    {
+      "id": "line20a",
+      "kind": "text",
+      "page": 0,
+      "box": [475.2, 396, 100.8, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "@.expenses.rentVehiclesMachinery",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_30[0]",
+        "label": "Rent or lease — vehicles, machinery, equipment",
+        "line": "20a"
+      }
+    },
+    {
+      "id": "line20b",
+      "kind": "text",
+      "page": 0,
+      "box": [475.2, 408, 100.8, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "@.expenses.rentOtherBusinessProperty",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_31[0]",
+        "label": "Rent or lease — other business property",
+        "line": "20b"
+      }
+    },
+    {
+      "id": "line21",
+      "kind": "text",
+      "page": 0,
+      "box": [475.2, 420, 100.8, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "@.expenses.repairsAndMaintenance",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_32[0]",
+        "label": "Repairs and maintenance",
+        "line": "21"
+      }
+    },
+    {
+      "id": "line22",
+      "kind": "text",
+      "page": 0,
+      "box": [475.2, 432, 100.8, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "@.expenses.supplies",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_33[0]",
+        "label": "Supplies",
+        "line": "22"
+      }
+    },
+    {
+      "id": "line23",
+      "kind": "text",
+      "page": 0,
+      "box": [475.2, 444, 100.8, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "@.expenses.taxesAndLicenses",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_34[0]",
+        "label": "Taxes and licenses",
+        "line": "23"
+      }
+    },
+    {
+      "id": "line24a",
+      "kind": "text",
+      "page": 0,
+      "box": [475.2, 468, 100.8, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "@.expenses.travel",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_35[0]",
+        "label": "Travel",
+        "line": "24a"
+      }
+    },
+    {
+      "id": "line24b",
+      "kind": "text",
+      "page": 0,
+      "box": [475.2, 480, 100.8, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "@.expenses.deductibleMeals",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_36[0]",
+        "label": "Deductible meals",
+        "line": "24b"
+      }
+    },
+    {
+      "id": "line25",
+      "kind": "text",
+      "page": 0,
+      "box": [475.2, 492, 100.8, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "@.expenses.utilities",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_37[0]",
+        "label": "Utilities",
+        "line": "25"
+      }
+    },
+    {
+      "id": "line26",
+      "kind": "text",
+      "page": 0,
+      "box": [475.2, 504, 100.8, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "@.expenses.wages",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_38[0]",
+        "label": "Wages (less employment credits)",
+        "line": "26"
+      }
+    },
+    {
+      "id": "line27a",
+      "kind": "text",
+      "page": 0,
+      "box": [475.2, 528.0, 100.8, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "@.expenses.energyEfficientCommercialBuildings",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_40[0]",
+        "label": "Energy efficient commercial bldgs deduction (attach Form 7205)",
+        "line": "27a"
+      }
+    },
+    {
+      "id": "line27b",
+      "kind": "text",
+      "page": 0,
+      "box": [475.2, 540.0, 100.8, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": {
+        "path": "@.otherExpenses[*].amount",
+        "transform": [
+          {
+            "op": "sum"
+          },
+          {
+            "decimals": 0,
+            "op": "round"
+          }
+        ]
+      },
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_39[0]",
+        "label": "Other expenses (from line 48)",
+        "line": "27b"
+      }
+    },
+    {
+      "id": "line28",
+      "kind": "text",
+      "page": 0,
+      "box": [475.2, 552, 100.8, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "@.computed.totalExpenses",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_41[0]",
+        "label": "Total expenses before business use of home",
+        "line": "28"
+      }
+    },
+    {
+      "id": "line29",
+      "kind": "text",
+      "page": 0,
+      "box": [475.2, 564, 100.8, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "@.computed.tentativeProfit",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_42[0]",
+        "label": "Tentative profit or (loss)",
+        "line": "29"
+      }
+    },
+    {
+      "id": "line30.totalHomeSqFt",
+      "kind": "text",
+      "page": 0,
+      "box": [352.8, 600.0, 93.6, 12.0],
+      "style": "money",
+      "format": "integer",
+      "bind": "@.homeOffice.totalHomeSquareFeet",
+      "refs": {
+        "acroField": "f1_43[0]",
+        "label": "Simplified method: total square footage of your home",
+        "line": "30"
+      }
+    },
+    {
+      "id": "line30.businessSqFt",
+      "kind": "text",
+      "page": 0,
+      "box": [237.6, 612.0, 129.6, 12.0],
+      "style": "money",
+      "format": "integer",
+      "bind": "@.homeOffice.businessSquareFeet",
+      "refs": {
+        "acroField": "f1_44[0]",
+        "label": "Simplified method: square footage used for business",
+        "line": "30"
+      }
+    },
+    {
+      "id": "line30",
+      "kind": "text",
+      "page": 0,
+      "box": [475.2, 624, 100.8, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "@.homeOffice.deduction",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_45[0]",
+        "label": "Expenses for business use of your home",
+        "line": "30"
+      }
+    },
+    {
+      "id": "line31",
+      "kind": "text",
+      "page": 0,
+      "box": [475.2, 660, 100.8, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "@.computed.netProfit",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_46[0]",
+        "label": "Net profit or (loss)",
+        "line": "31"
+      }
+    },
+    {
+      "id": "line32",
+      "kind": "choice",
+      "page": 0,
+      "options": [
+        {
+          "box": [475.2, 710.0, 8.0, 8.0],
+          "value": "ALL"
+        },
+        {
+          "box": [475.2, 722.5, 8.0, 8.0],
+          "value": "SOME"
+        }
+      ],
+      "mark": {
+        "glyph": "X",
+        "inset": 0.5
+      },
+      "bind": "@.atRisk",
+      "when": "@.computed.netProfit < 0",
+      "refs": {
+        "label": "Investment at risk",
+        "line": "32"
+      }
+    },
+    {
+      "id": "vehicle.month",
+      "kind": "text",
+      "page": 1,
+      "box": [374.4, 360.0, 28.8, 12.0],
+      "style": "comb",
+      "format": "text",
+      "bind": {
+        "path": "@.vehicle.placedInService",
+        "transform": [
+          {
+            "end": 7,
+            "op": "slice",
+            "start": 5
+          }
+        ]
+      },
+      "refs": {
+        "acroField": "f2_9[0]",
+        "label": "Vehicle placed in service — month",
+        "line": "43"
+      }
+    },
+    {
+      "id": "vehicle.day",
+      "kind": "text",
+      "page": 1,
+      "box": [410.4, 360.0, 28.8, 12.0],
+      "style": "comb",
+      "format": "text",
+      "bind": {
+        "path": "@.vehicle.placedInService",
+        "transform": [
+          {
+            "end": 10,
+            "op": "slice",
+            "start": 8
+          }
+        ]
+      },
+      "refs": {
+        "acroField": "f2_10[0]",
+        "label": "Vehicle placed in service — day",
+        "line": "43"
+      }
+    },
+    {
+      "id": "vehicle.year",
+      "kind": "text",
+      "page": 1,
+      "box": [446.4, 360.0, 28.8, 12.0],
+      "style": "comb",
+      "format": "text",
+      "bind": {
+        "path": "@.vehicle.placedInService",
+        "transform": [
+          {
+            "end": 4,
+            "op": "slice",
+            "start": 2
+          }
+        ]
+      },
+      "refs": {
+        "acroField": "f2_11[0]",
+        "label": "Vehicle placed in service — year",
+        "line": "43"
+      }
+    },
+    {
+      "id": "vehicle.businessMiles",
+      "kind": "text",
+      "page": 1,
+      "box": [100.8, 408.0, 100.8, 12.0],
+      "style": "money",
+      "format": {
+        "$extends": "integer",
+        "zero": "zero"
+      },
+      "bind": "@.vehicle.miles.business",
+      "refs": {
+        "acroField": "f2_12[0]",
+        "label": "Business miles",
+        "line": "44a"
+      }
+    },
+    {
+      "id": "vehicle.commutingMiles",
+      "kind": "text",
+      "page": 1,
+      "box": [331.2, 408.0, 93.6, 12.0],
+      "style": "money",
+      "format": {
+        "$extends": "integer",
+        "zero": "zero"
+      },
+      "bind": "@.vehicle.miles.commuting",
+      "refs": {
+        "acroField": "f2_13[0]",
+        "label": "Commuting miles",
+        "line": "44b"
+      }
+    },
+    {
+      "id": "vehicle.otherMiles",
+      "kind": "text",
+      "page": 1,
+      "box": [468.0, 408.0, 108.0, 12.0],
+      "style": "money",
+      "format": {
+        "$extends": "integer",
+        "zero": "zero"
+      },
+      "bind": "@.vehicle.miles.other",
+      "refs": {
+        "acroField": "f2_14[0]",
+        "label": "Other miles",
+        "line": "44c"
+      }
+    },
+    {
+      "id": "vehicle.personalUse",
+      "kind": "choice",
+      "page": 1,
+      "options": [
+        {
+          "box": [489.6, 433.8, 8.4, 8.4],
+          "value": true
+        },
+        {
+          "box": [540.0, 433.8, 8.4, 8.4],
+          "value": false
+        }
+      ],
+      "mark": {
+        "glyph": "X",
+        "inset": 0.5
+      },
+      "bind": "@.vehicle.availableForPersonalUse",
+      "refs": {
+        "label": "Vehicle available for off-duty personal use",
+        "line": "45"
+      }
+    },
+    {
+      "id": "vehicle.another",
+      "kind": "choice",
+      "page": 1,
+      "options": [
+        {
+          "box": [489.6, 457.8, 8.4, 8.4],
+          "value": true
+        },
+        {
+          "box": [540.0, 457.8, 8.4, 8.4],
+          "value": false
+        }
+      ],
+      "mark": {
+        "glyph": "X",
+        "inset": 0.5
+      },
+      "bind": "@.vehicle.hasAnotherVehicleForPersonal",
+      "refs": {
+        "label": "Another vehicle available for personal use",
+        "line": "46"
+      }
+    },
+    {
+      "id": "vehicle.evidence",
+      "kind": "choice",
+      "page": 1,
+      "options": [
+        {
+          "box": [489.6, 481.8, 8.4, 8.4],
+          "value": true
+        },
+        {
+          "box": [540.0, 481.8, 8.4, 8.4],
+          "value": false
+        }
+      ],
+      "mark": {
+        "glyph": "X",
+        "inset": 0.5
+      },
+      "bind": "@.vehicle.hasEvidence",
+      "refs": {
+        "label": "Do you have evidence to support the deduction?",
+        "line": "47a"
+      }
+    },
+    {
+      "id": "vehicle.evidenceWritten",
+      "kind": "choice",
+      "page": 1,
+      "options": [
+        {
+          "box": [489.6, 505.8, 8.4, 8.4],
+          "value": true
+        },
+        {
+          "box": [540.0, 505.8, 8.4, 8.4],
+          "value": false
+        }
+      ],
+      "mark": {
+        "glyph": "X",
+        "inset": 0.5
+      },
+      "bind": "@.vehicle.evidenceIsWritten",
+      "refs": {
+        "label": "Is the evidence written?",
+        "line": "47b"
+      }
+    },
+    {
+      "id": "otherExpenses",
+      "kind": "repeat",
+      "page": 1,
+      "slots": {
+        "advance": {
+          "dx": 0,
+          "dy": 24
+        },
+        "count": 8
+      },
+      "template": [
+        {
+          "id": "description",
+          "kind": "text",
+          "box": [36.0, 540.0, 424.8, 12.0],
+          "style": "entry",
+          "format": "upperText",
+          "bind": "@.description",
+          "refs": {
+            "label": "Description"
+          }
+        },
+        {
+          "id": "amount",
+          "kind": "text",
+          "box": [468.0, 540.0, 108.0, 12.0],
+          "style": "money",
+          "format": "wholeUSD",
+          "bind": "@.amount",
+          "tags": [
+            "money"
+          ],
+          "refs": {
+            "label": "Amount",
+            "line": "48"
+          }
+        }
+      ],
+      "bind": "@.otherExpenses",
+      "overflow": {
+        "onOverflow": [
+          {
+            "id": "seeStatement",
+            "kind": "text",
+            "box": [36.0, 732.0, 424.8, 12.0],
+            "style": "entry",
+            "format": "upperText",
+            "bind": {
+              "literal": "See attached statement — additional other expenses"
+            },
+            "refs": {
+              "acroField": "f2_31[0]",
+              "label": "Overflow notice",
+              "line": "48"
+            }
+          },
+          {
+            "id": "remainder",
+            "kind": "text",
+            "box": [468.0, 732.0, 108.0, 12.0],
+            "style": "money",
+            "format": "wholeUSD",
+            "bind": {
+              "path": "@.otherExpenses[8:].amount",
+              "transform": [
+                {
+                  "op": "sum"
+                },
+                {
+                  "decimals": 0,
+                  "op": "round"
+                }
+              ]
+            },
+            "tags": [
+              "money"
+            ],
+            "refs": {
+              "acroField": "f2_32[0]",
+              "label": "Total of the overflow rows",
+              "line": "48"
+            }
+          }
+        ],
+        "statementId": "schedule-c-other-expenses-continuation",
+        "strategy": "statement",
+        "title": "Part V — Other expenses (continued)"
+      },
+      "refs": {
+        "label": "Part V — Other expenses"
+      }
+    },
+    {
+      "id": "line48",
+      "kind": "text",
+      "page": 1,
+      "box": [468.0, 744.0, 108.0, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": {
+        "path": "@.otherExpenses[*].amount",
+        "transform": [
+          {
+            "op": "sum"
+          },
+          {
+            "decimals": 0,
+            "op": "round"
+          }
+        ]
+      },
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f2_33[0]",
+        "label": "Total other expenses",
+        "line": "48"
+      }
+    }
+  ]
+}

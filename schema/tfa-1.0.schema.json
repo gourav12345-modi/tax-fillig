@@ -1,0 +1,1286 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://instead.com/schemas/tfa-1.0.schema.json",
+  "title": "Tax Form Annotation (TFA) 1.0",
+  "description": "Describes where every value on a fillable government tax form goes, how it is formatted, and which value in a return data set it comes from. A document with `extends` is a patch, so `form`, `media` and `fields` only have to be complete once inheritance has been applied — validate the composed document to check that. See SPEC.md for the normative prose.",
+  "type": "object",
+  "required": [
+    "tfa",
+    "id",
+    "version"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "$comment": {
+      "type": "string"
+    },
+    "tfa": {
+      "const": "1.0",
+      "description": "Specification version this document conforms to."
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(\\.[a-z0-9-]+)*:[A-Za-z0-9._+-]+$",
+      "description": "Stable identifier, `authority.form:edition` — e.g. `us.irs.1040:2025`."
+    },
+    "version": {
+      "type": "string",
+      "description": "Semantic version of this annotation document, independent of the form's own revision."
+    },
+    "extends": {
+      "description": "Inherit from another annotation. Scalars and objects are deep-merged, `fields` are merged by id.",
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "object",
+          "required": [
+            "href"
+          ],
+          "properties": {
+            "href": {
+              "type": "string"
+            }
+          }
+        }
+      ]
+    },
+    "adjust": {
+      "$ref": "#/$defs/adjust"
+    },
+    "form": {
+      "$ref": "#/$defs/form"
+    },
+    "instance": {
+      "$ref": "#/$defs/instance"
+    },
+    "media": {
+      "$ref": "#/$defs/media"
+    },
+    "fonts": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/font"
+      }
+    },
+    "defaults": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "style": {
+          "$ref": "#/$defs/style"
+        },
+        "format": {
+          "$ref": "#/$defs/format"
+        }
+      }
+    },
+    "styles": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/style"
+      }
+    },
+    "formats": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/format"
+      }
+    },
+    "profiles": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/profile"
+      }
+    },
+    "fields": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/field"
+      }
+    }
+  },
+  "allOf": [
+    {
+      "$comment": "A root document (no `extends`) must stand on its own; a patch document need not.",
+      "if": {
+        "not": {
+          "required": [
+            "extends"
+          ]
+        }
+      },
+      "then": {
+        "required": [
+          "form",
+          "media",
+          "fields"
+        ],
+        "properties": {
+          "form": {
+            "required": [
+              "title",
+              "authority",
+              "formNumber",
+              "taxYear"
+            ]
+          },
+          "media": {
+            "required": [
+              "pages"
+            ],
+            "properties": {
+              "pages": {
+                "minItems": 1
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "taxPath": {
+      "type": "string",
+      "description": "A TaxPath expression. `$` is the return data root, `@` the current item inside a repeat (or the form instance at document scope), `#` the loop metadata. See SPEC.md section 6.",
+      "minLength": 1
+    },
+    "predicate": {
+      "description": "A `when` condition: either a TaxPath predicate string, or a boolean combinator over such conditions.",
+      "oneOf": [
+        {
+          "type": "string",
+          "minLength": 1
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "allOf"
+          ],
+          "properties": {
+            "allOf": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/predicate"
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "anyOf"
+          ],
+          "properties": {
+            "anyOf": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/predicate"
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "not"
+          ],
+          "properties": {
+            "not": {
+              "$ref": "#/$defs/predicate"
+            }
+          }
+        }
+      ]
+    },
+    "bind": {
+      "description": "Where a field's value comes from.",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/taxPath"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "path": {
+              "$ref": "#/$defs/taxPath"
+            },
+            "fallback": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/taxPath"
+              },
+              "description": "Tried in order when `path` resolves to nothing."
+            },
+            "literal": {
+              "description": "A constant. Mutually exclusive with `path`."
+            },
+            "default": {
+              "description": "Used when nothing resolved and no fallback matched."
+            },
+            "required": {
+              "type": "boolean",
+              "description": "Raise a planning error rather than print a blank box."
+            },
+            "transform": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/transform"
+              }
+            },
+            "$comment": {
+              "type": "string"
+            }
+          },
+          "oneOf": [
+            {
+              "required": [
+                "path"
+              ]
+            },
+            {
+              "required": [
+                "literal"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "transform": {
+      "type": "object",
+      "required": [
+        "op"
+      ],
+      "description": "One step of a value pipeline. The operator set is closed by design; see SPEC.md section 6.4.",
+      "properties": {
+        "op": {
+          "enum": [
+            "sum",
+            "count",
+            "min",
+            "max",
+            "first",
+            "last",
+            "join",
+            "pluck",
+            "abs",
+            "negate",
+            "add",
+            "subtract",
+            "multiply",
+            "divide",
+            "round",
+            "clamp",
+            "upper",
+            "lower",
+            "trim",
+            "digits",
+            "slice",
+            "padStart",
+            "concat",
+            "default"
+          ]
+        },
+        "value": {},
+        "decimals": {
+          "type": "integer"
+        },
+        "mode": {
+          "enum": [
+            "half-up",
+            "half-even",
+            "down",
+            "up",
+            "floor",
+            "ceil"
+          ]
+        },
+        "min": {
+          "type": "number"
+        },
+        "max": {
+          "type": "number"
+        },
+        "separator": {
+          "type": "string"
+        },
+        "path": {
+          "$ref": "#/$defs/taxPath"
+        },
+        "start": {
+          "type": "integer"
+        },
+        "end": {
+          "type": "integer"
+        },
+        "length": {
+          "type": "integer"
+        },
+        "char": {
+          "type": "string"
+        },
+        "prefix": {
+          "type": "string"
+        },
+        "suffix": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "box": {
+      "description": "A rectangle in the units and origin declared by `media`. The array form is [x, y, w, h].",
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 4,
+          "maxItems": 4
+        },
+        {
+          "type": "object",
+          "required": [
+            "x",
+            "y",
+            "w",
+            "h"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "x": {
+              "type": "number"
+            },
+            "y": {
+              "type": "number"
+            },
+            "w": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "h": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "rotate": {
+              "type": "number"
+            }
+          }
+        }
+      ]
+    },
+    "form": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "authority": {
+          "type": "string",
+          "description": "Issuing authority, e.g. `US-IRS`, `US-CA-FTB`."
+        },
+        "formNumber": {
+          "type": "string"
+        },
+        "taxYear": {
+          "type": "integer"
+        },
+        "revision": {
+          "type": "string",
+          "description": "The authority's own revision marker for the artwork."
+        },
+        "omb": {
+          "type": "string"
+        },
+        "catalog": {
+          "type": "string"
+        },
+        "attachmentSequence": {
+          "type": "string"
+        },
+        "locale": {
+          "type": "string"
+        },
+        "note": {
+          "type": "string"
+        }
+      }
+    },
+    "instance": {
+      "type": "object",
+      "required": [
+        "path"
+      ],
+      "additionalProperties": false,
+      "description": "Declares that this form is printed once per element of a collection — a Schedule C per business, a K-1 per partner. `@` at document scope then refers to the selected element.",
+      "properties": {
+        "path": {
+          "$ref": "#/$defs/taxPath"
+        },
+        "required": {
+          "type": "boolean",
+          "default": true
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "media": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "uri": {
+          "type": "string"
+        },
+        "sha256": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[0-9a-f]{64}$",
+          "description": "Pins the annotation to one exact artwork revision. Absent means unpinned, which the linter reports."
+        },
+        "pageCount": {
+          "type": "integer"
+        },
+        "units": {
+          "enum": [
+            "pt",
+            "mm",
+            "in"
+          ],
+          "default": "pt"
+        },
+        "origin": {
+          "enum": [
+            "top-left",
+            "bottom-left"
+          ],
+          "default": "top-left"
+        },
+        "pages": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "index",
+              "width",
+              "height"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "index": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "width": {
+                "type": "number"
+              },
+              "height": {
+                "type": "number"
+              },
+              "rotate": {
+                "type": "number"
+              }
+            }
+          }
+        }
+      }
+    },
+    "font": {
+      "type": "object",
+      "properties": {
+        "family": {
+          "type": "string"
+        },
+        "base14": {
+          "enum": [
+            "Helvetica",
+            "Helvetica-Bold",
+            "Helvetica-Oblique",
+            "Times-Roman",
+            "Times-Bold",
+            "Courier",
+            "Courier-Bold"
+          ],
+          "description": "Metrics-bearing standard font a renderer may fall back to."
+        },
+        "bold": {
+          "type": "string"
+        },
+        "italic": {
+          "type": "string"
+        },
+        "fallback": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "encoding": {
+          "enum": [
+            "WinAnsi",
+            "Unicode"
+          ],
+          "default": "WinAnsi"
+        },
+        "src": {
+          "type": "string",
+          "description": "Where a renderer can obtain the real face."
+        }
+      }
+    },
+    "style": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$extends": {
+          "type": "string"
+        },
+        "font": {
+          "type": "string"
+        },
+        "size": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "weight": {
+          "enum": [
+            "normal",
+            "bold"
+          ]
+        },
+        "italic": {
+          "type": "boolean"
+        },
+        "color": {
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{6}$"
+        },
+        "align": {
+          "enum": [
+            "left",
+            "center",
+            "right",
+            "decimal"
+          ]
+        },
+        "valign": {
+          "enum": [
+            "top",
+            "middle",
+            "bottom",
+            "baseline"
+          ]
+        },
+        "pad": {
+          "oneOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "top": {
+                  "type": "number"
+                },
+                "right": {
+                  "type": "number"
+                },
+                "bottom": {
+                  "type": "number"
+                },
+                "left": {
+                  "type": "number"
+                }
+              }
+            }
+          ]
+        },
+        "letterSpacing": {
+          "type": "number"
+        },
+        "lineHeight": {
+          "type": "number"
+        },
+        "decimalSeparator": {
+          "type": "string"
+        },
+        "decimalTab": {
+          "type": "number",
+          "description": "For align `decimal`: distance from the content box's right edge to the decimal point."
+        },
+        "fit": {
+          "type": "object",
+          "required": [
+            "mode"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "mode": {
+              "enum": [
+                "clip",
+                "shrink",
+                "condense",
+                "ellipsis",
+                "wrap"
+              ]
+            },
+            "min": {
+              "type": "number",
+              "description": "shrink: smallest point size to try."
+            },
+            "step": {
+              "type": "number",
+              "description": "shrink: size decrement."
+            },
+            "minScale": {
+              "type": "number",
+              "description": "condense: smallest horizontal scale."
+            },
+            "maxLines": {
+              "type": "integer",
+              "description": "wrap: lines before the rest overflows."
+            },
+            "lineHeight": {
+              "type": "number"
+            }
+          }
+        }
+      }
+    },
+    "format": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "$extends": {
+          "type": "string"
+        },
+        "type": {
+          "enum": [
+            "text",
+            "number",
+            "date",
+            "digits",
+            "boolean"
+          ],
+          "default": "text"
+        },
+        "case": {
+          "enum": [
+            "upper",
+            "lower",
+            "title"
+          ]
+        },
+        "maxLength": {
+          "type": "integer",
+          "exclusiveMinimum": 0
+        },
+        "truncate": {
+          "enum": [
+            "clip",
+            "ellipsis"
+          ]
+        },
+        "decimals": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "rounding": {
+          "enum": [
+            "half-up",
+            "half-even",
+            "down",
+            "up",
+            "floor",
+            "ceil"
+          ],
+          "default": "half-up"
+        },
+        "grouping": {
+          "type": "boolean",
+          "default": true
+        },
+        "groupSeparator": {
+          "type": "string"
+        },
+        "decimalSeparator": {
+          "type": "string"
+        },
+        "negative": {
+          "enum": [
+            "parens",
+            "minus",
+            "trailing-minus",
+            "abs"
+          ],
+          "default": "parens"
+        },
+        "zero": {
+          "description": "What to print for exactly zero: `blank`, `zero`, `dash` (the IRS -0- convention) or a literal string."
+        },
+        "null": {
+          "description": "What to print when the binding resolved to nothing."
+        },
+        "prefix": {
+          "type": "string"
+        },
+        "suffix": {
+          "type": "string"
+        },
+        "pattern": {
+          "type": "string",
+          "description": "date: token pattern, e.g. MM/DD/YYYY."
+        },
+        "length": {
+          "type": "integer",
+          "description": "digits: exact digit count expected."
+        },
+        "onLengthMismatch": {
+          "enum": [
+            "error",
+            "pad",
+            "ignore"
+          ],
+          "default": "error"
+        },
+        "mask": {
+          "type": "string",
+          "description": "digits: `#` is a digit slot, anything else is literal — e.g. ###-##-####."
+        },
+        "redact": {
+          "enum": [
+            "none",
+            "last4",
+            "full"
+          ]
+        },
+        "redactChar": {
+          "type": "string"
+        },
+        "trueText": {
+          "type": "string"
+        },
+        "falseText": {
+          "type": "string"
+        }
+      }
+    },
+    "layout": {
+      "description": "How the formatted string is arranged inside the box.",
+      "oneOf": [
+        {
+          "type": "object",
+          "required": [
+            "mode"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "mode": {
+              "const": "line"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "mode"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "mode": {
+              "const": "wrap"
+            },
+            "maxLines": {
+              "type": "integer"
+            },
+            "lineHeight": {
+              "type": "number"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "mode",
+            "cells"
+          ],
+          "additionalProperties": false,
+          "description": "One character per printed cell: SSNs, EINs, routing numbers, PINs.",
+          "properties": {
+            "mode": {
+              "const": "comb"
+            },
+            "cells": {
+              "oneOf": [
+                {
+                  "type": "integer",
+                  "exclusiveMinimum": 0,
+                  "description": "Evenly divide the box into this many cells."
+                },
+                {
+                  "type": "array",
+                  "minItems": 1,
+                  "description": "Explicit [offsetFromBoxLeft, width] per cell, for forms whose dividers are not evenly spaced.",
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "type": "number"
+                    },
+                    "minItems": 2,
+                    "maxItems": 2
+                  }
+                }
+              ]
+            },
+            "align": {
+              "enum": [
+                "left",
+                "right"
+              ],
+              "default": "left",
+              "description": "Which end short values are packed against."
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "mode",
+            "segments"
+          ],
+          "additionalProperties": false,
+          "description": "One value spread across sub-boxes, such as a dollars column and a cents column with the form's own decimal point between them.",
+          "properties": {
+            "mode": {
+              "const": "split"
+            },
+            "separator": {
+              "type": "string",
+              "default": "."
+            },
+            "fractionWhenAbsent": {
+              "type": "string"
+            },
+            "segments": {
+              "type": "array",
+              "minItems": 2,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "part": {
+                    "enum": [
+                      "integer",
+                      "fraction"
+                    ],
+                    "description": "Omit to make the segment a spacer for artwork the form already prints."
+                  },
+                  "w": {
+                    "type": "number",
+                    "description": "Omit to share the remaining width."
+                  },
+                  "align": {
+                    "enum": [
+                      "left",
+                      "center",
+                      "right"
+                    ]
+                  },
+                  "pad": {
+                    "oneOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "object"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "mark": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "style": {
+          "enum": [
+            "glyph",
+            "check",
+            "cross",
+            "fill"
+          ],
+          "default": "glyph"
+        },
+        "glyph": {
+          "type": "string",
+          "default": "X"
+        },
+        "size": {
+          "type": "number"
+        },
+        "inset": {
+          "type": "number"
+        },
+        "color": {
+          "type": "string"
+        },
+        "lineWidth": {
+          "type": "number"
+        }
+      }
+    },
+    "refs": {
+      "type": "object",
+      "description": "Cross-references. None of these affect rendering; they make the annotation reviewable, auditable and machine-checkable against other systems.",
+      "properties": {
+        "line": {
+          "type": "string",
+          "description": "The form's own line number, e.g. `11a`."
+        },
+        "label": {
+          "type": "string",
+          "description": "The caption printed next to the box."
+        },
+        "acroField": {
+          "type": "string",
+          "description": "AcroForm field name, for filling the fillable PDF instead of stamping it."
+        },
+        "mef": {
+          "type": "string",
+          "description": "IRS Modernized e-File schema element, so paper and e-file output can be reconciled."
+        },
+        "note": {
+          "type": "string"
+        }
+      }
+    },
+    "field": {
+      "type": "object",
+      "required": [
+        "id"
+      ],
+      "properties": {
+        "$comment": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Unique within the document, and stable across form revisions."
+        },
+        "$op": {
+          "const": "remove",
+          "description": "Only meaningful in a document with `extends`: deletes the inherited field."
+        },
+        "kind": {
+          "enum": [
+            "text",
+            "mark",
+            "choice",
+            "repeat",
+            "image",
+            "barcode"
+          ],
+          "default": "text"
+        },
+        "page": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "box": {
+          "$ref": "#/$defs/box"
+        },
+        "style": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/$defs/style"
+            }
+          ]
+        },
+        "format": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/$defs/format"
+            }
+          ]
+        },
+        "layout": {
+          "$ref": "#/$defs/layout"
+        },
+        "bind": {
+          "$ref": "#/$defs/bind"
+        },
+        "when": {
+          "$ref": "#/$defs/predicate"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "refs": {
+          "$ref": "#/$defs/refs"
+        },
+        "required": {
+          "type": "boolean"
+        },
+        "mark": {
+          "$ref": "#/$defs/mark"
+        },
+        "options": {
+          "type": "array",
+          "minItems": 1,
+          "description": "kind `choice`: the mutually exclusive boxes and the value that selects each.",
+          "items": {
+            "type": "object",
+            "required": [
+              "value",
+              "box"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "value": {},
+              "box": {
+                "$ref": "#/$defs/box"
+              },
+              "mark": {
+                "$ref": "#/$defs/mark"
+              },
+              "label": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "exhaustive": {
+          "type": "boolean",
+          "default": true,
+          "description": "kind `choice`: a bound value with no matching option is an error."
+        },
+        "slots": {
+          "type": "object",
+          "required": [
+            "count",
+            "advance"
+          ],
+          "additionalProperties": false,
+          "description": "kind `repeat`: how many printed rows or columns exist, and the step between them.",
+          "properties": {
+            "count": {
+              "type": "integer",
+              "exclusiveMinimum": 0
+            },
+            "advance": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "dx": {
+                  "type": "number",
+                  "default": 0
+                },
+                "dy": {
+                  "type": "number",
+                  "default": 0
+                }
+              }
+            }
+          }
+        },
+        "template": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/field"
+          },
+          "description": "kind `repeat`: fields positioned for slot 0; each later slot adds `advance` to every box."
+        },
+        "overflow": {
+          "type": "object",
+          "required": [
+            "strategy"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "strategy": {
+              "enum": [
+                "error",
+                "truncate",
+                "statement"
+              ],
+              "default": "error"
+            },
+            "statementId": {
+              "type": "string"
+            },
+            "title": {
+              "type": "string"
+            },
+            "onOverflow": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/field"
+              },
+              "description": "Extra fields rendered only when the data overflowed — the \"check here\" box, a \"see attached statement\" line, a subtotal of the spilled rows."
+            }
+          }
+        },
+        "fit": {
+          "enum": [
+            "contain",
+            "cover",
+            "fill"
+          ],
+          "description": "kind `image`."
+        },
+        "symbology": {
+          "type": "string",
+          "description": "kind `barcode`, e.g. PDF417 for state 2-D barcode requirements."
+        },
+        "errorCorrection": {
+          "type": [
+            "string",
+            "integer"
+          ]
+        }
+      }
+    },
+    "adjust": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Bulk geometry corrections applied after inheritance — for when an authority reprints a form and the whole grid shifts.",
+      "properties": {
+        "$comment": {
+          "type": "string"
+        },
+        "pages": {
+          "type": "object",
+          "propertyNames": {
+            "pattern": "^[0-9]+$"
+          },
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "dx": {
+                "type": "number"
+              },
+              "dy": {
+                "type": "number"
+              }
+            }
+          }
+        }
+      }
+    },
+    "profile": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "A named output variant: filing copy, client copy, preparer review copy.",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "only": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Selectors; when present, only matching fields render."
+        },
+        "exclude": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "redact": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "select",
+              "mode"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "select": {
+                "type": "string",
+                "description": "`#id`, `tag:name` or `*`."
+              },
+              "mode": {
+                "enum": [
+                  "none",
+                  "last4",
+                  "full"
+                ]
+              }
+            }
+          }
+        },
+        "stamp": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "box",
+              "text"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "page": {
+                "type": "integer"
+              },
+              "box": {
+                "$ref": "#/$defs/box"
+              },
+              "text": {
+                "type": "string"
+              },
+              "style": {
+                "oneOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "$ref": "#/$defs/style"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

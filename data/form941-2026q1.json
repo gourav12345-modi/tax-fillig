@@ -1,0 +1,90 @@
+{
+  "$comment": "Payroll data for one employer's first-quarter Form 941. A different data shape entirely from the 1040 sample — the annotation, not the spec, decides what the paths look like.",
+  "meta": { "filingId": "f941_01JT2P7Q4X", "engineVersion": "payroll-2026.1.0" },
+
+  "employer": {
+    "ein": "87-1234567",
+    "name": "Instead Tax Advisors, LLC",
+    "tradeName": "Instead",
+    "address": { "street": "88 Kearny St", "suite": "Suite 900", "city": "San Francisco", "state": "CA", "zip": "94108" }
+  },
+
+  "filing": { "year": 2026, "quarter": 1, "aggregateFilerType": null },
+
+  "part1": {
+    "line1": { "employeeCount": 34 },
+    "line2": { "wagesTipsOtherCompensation": 1284650.42 },
+    "line3": { "federalIncomeTaxWithheld": 187420.18 },
+    "line4": { "noSocialSecurityOrMedicareWages": false },
+    "line5a": { "socialSecurityWages": { "taxableAmount": 1246300.00, "tax": 154541.20 } },
+    "line5b": { "socialSecurityTips": { "taxableAmount": 0, "tax": 0 } },
+    "line5c": { "medicareWagesAndTips": { "taxableAmount": 1284650.42, "tax": 37254.86 } },
+    "line5d": {
+      "$comment": "One employee earned 222,850.42 this quarter: 22,850.42 above $200,000 is subject to Additional Medicare Tax withholding, and the same employee's 38,350.42 above the 2026 Social Security wage base ($184,500) is why line 5a is below line 5c.",
+      "additionalMedicareWages": { "taxableAmount": 22850.42, "tax": 205.65 }
+    },
+    "line5e": { "totalSocialSecurityAndMedicareTaxes": 192001.71 },
+    "line5f": { "section3121qTaxDue": 0 },
+    "line6": { "totalTaxesBeforeAdjustments": 379421.89 },
+    "line7": { "fractionsOfCentsAdjustment": -0.34 },
+    "line8": { "sickPayAdjustment": 0 },
+    "line9": { "tipsAndGroupTermLifeAdjustment": 0 },
+    "line10": { "totalTaxesAfterAdjustments": 379421.55 },
+    "line11": { "smallBusinessPayrollTaxCredit": 12500.00 },
+    "line12": { "totalTaxesAfterCredits": 366921.55 },
+    "line13": { "totalDeposits": 371200.00 },
+    "line14": { "balanceDue": 0 },
+    "line15": {
+      "overpayment": 4278.45,
+      "disposition": "SEND_A_REFUND",
+      "directDeposit": { "routingNumber": "121000248", "accountNumber": "4471902365", "accountType": "CHECKING" }
+    }
+  },
+
+  "part2": {
+    "line16": {
+      "$comment": "Roughly $1.47M of annual liability puts the lookback period far above $50,000, so this employer deposits semiweekly and reports daily liability on Schedule B rather than on the three monthly lines.",
+      "depositSchedule": "SEMIWEEKLY",
+      "monthlyLiability": null
+    }
+  },
+
+  "part3": {
+    "line17": { "businessClosed": false, "finalWagesPaidOn": null },
+    "line18": { "seasonalEmployer": false }
+  },
+
+  "part4": {
+    "thirdPartyDesignee": { "allowed": false, "name": null, "phone": null, "pin": null }
+  },
+
+  "part5": {
+    "signer": { "name": "Morgan T. Ellis", "title": "Managing Member", "phone": "415-555-0110", "signedOn": "2026-04-28", "signatureHref": null }
+  },
+
+  "paidPreparer": null,
+
+  "scheduleB": {
+    "$comment": "Daily tax liability for a semiweekly depositor: one array per month, indexed by day (index 0 is the 1st), null where no wages were paid. Payroll is semi-monthly on the 15th and the last day, moved back to the Friday when either falls on a weekend. The line 11 research payroll credit reduces the first payday's liability, as the Schedule B instructions require, so the three months sum to Form 941 line 12.",
+    "months": [
+      { "month": 1, "days": [
+        null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, 50620.40, null,
+        null, null, null, null, null, null, null, null,
+        null, null, null, null, null, 63480.55, null
+      ] },
+      { "month": 2, "days": [
+        null, null, null, null, null, null, null, null,
+        null, null, null, null, 62905.10, null, null, null,
+        null, null, null, null, null, null, null, null,
+        null, null, 63210.85, null
+      ] },
+      { "month": 3, "days": [
+        null, null, null, null, null, null, null, null,
+        null, null, null, null, 62846.10, null, null, null,
+        null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, 63858.55
+      ] }
+    ]
+  }
+}

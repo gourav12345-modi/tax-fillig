@@ -1,0 +1,2417 @@
+{
+  "$schema": "../schema/tfa-1.0.schema.json",
+  "tfa": "1.0",
+  "id": "us.irs.1040:2025",
+  "version": "1.0.0",
+  "form": {
+    "authority": "US-IRS",
+    "catalog": "11320B",
+    "formNumber": "1040",
+    "locale": "en-US",
+    "omb": "1545-0074",
+    "revision": "2025-09-05",
+    "taxYear": 2025,
+    "title": "Form 1040 — U.S. Individual Income Tax Return"
+  },
+  "media": {
+    "origin": "top-left",
+    "pageCount": 2,
+    "pages": [
+      {
+        "height": 792,
+        "index": 0,
+        "rotate": 0,
+        "width": 612
+      },
+      {
+        "height": 792,
+        "index": 1,
+        "rotate": 0,
+        "width": 612
+      }
+    ],
+    "sha256": "3d31c226df0d189ced80e039d01cf0f8820c1019681a0f0ca6264de277b7e982",
+    "units": "pt",
+    "uri": "https://www.irs.gov/pub/irs-pdf/f1040.pdf"
+  },
+  "fonts": {
+    "mono": {
+      "base14": "Courier",
+      "bold": "Courier-Bold",
+      "family": "Courier"
+    },
+    "sans": {
+      "base14": "Helvetica",
+      "bold": "Helvetica-Bold",
+      "fallback": [
+        "Arial",
+        "Liberation Sans"
+      ],
+      "family": "Helvetica",
+      "italic": "Helvetica-Oblique"
+    }
+  },
+  "defaults": {
+    "style": {
+      "align": "left",
+      "color": "#000000",
+      "font": "sans",
+      "size": 9,
+      "valign": "middle"
+    },
+    "format": {
+      "type": "text"
+    }
+  },
+  "styles": {
+    "cell": {
+      "fit": {
+        "min": 5.5,
+        "mode": "shrink"
+      },
+      "pad": {
+        "left": 2,
+        "right": 2
+      },
+      "size": 8
+    },
+    "comb": {
+      "align": "center",
+      "pad": 0,
+      "size": 9
+    },
+    "combSmall": {
+      "$extends": "comb",
+      "size": 7.5
+    },
+    "entry": {
+      "fit": {
+        "min": 6,
+        "mode": "shrink"
+      },
+      "pad": {
+        "left": 3,
+        "right": 3
+      }
+    },
+    "entrySmall": {
+      "$extends": "entry",
+      "size": 8
+    },
+    "money": {
+      "fit": {
+        "min": 6.5,
+        "mode": "shrink"
+      },
+      "align": "right",
+      "pad": {
+        "right": 5
+      }
+    },
+    "stamp": {
+      "align": "center",
+      "color": "#C0392B",
+      "font": "sans",
+      "size": 22,
+      "valign": "middle",
+      "weight": "bold"
+    }
+  },
+  "formats": {
+    "accountNumber": {
+      "type": "digits"
+    },
+    "centsUSD": {
+      "$extends": "wholeUSD",
+      "decimals": 2,
+      "zero": "zero"
+    },
+    "date": {
+      "pattern": "MM/DD/YYYY",
+      "type": "date"
+    },
+    "ein": {
+      "length": 9,
+      "mask": "##-#######",
+      "type": "digits"
+    },
+    "phone": {
+      "length": 10,
+      "mask": "###-###-####",
+      "type": "digits"
+    },
+    "pin5": {
+      "length": 5,
+      "type": "digits"
+    },
+    "pin6": {
+      "length": 6,
+      "type": "digits"
+    },
+    "routingNumber": {
+      "length": 9,
+      "type": "digits"
+    },
+    "ssn": {
+      "length": 9,
+      "redactChar": "X",
+      "type": "digits"
+    },
+    "ssnMasked": {
+      "length": 9,
+      "mask": "###-##-####",
+      "redactChar": "X",
+      "type": "digits"
+    },
+    "stateCode": {
+      "case": "upper",
+      "maxLength": 2,
+      "type": "text"
+    },
+    "text": {
+      "type": "text"
+    },
+    "upperText": {
+      "case": "upper",
+      "type": "text"
+    },
+    "wholeUSD": {
+      "decimals": 0,
+      "grouping": true,
+      "negative": "parens",
+      "null": "blank",
+      "rounding": "half-up",
+      "type": "number",
+      "zero": "blank"
+    },
+    "wholeUSDzeroDash": {
+      "$extends": "wholeUSD",
+      "zero": "dash"
+    },
+    "zip": {
+      "maxLength": 10,
+      "type": "text"
+    }
+  },
+  "profiles": {
+    "client": {
+      "description": "The copy the taxpayer keeps. Identifiers are masked and the page is stamped so it can never be mistaken for a filing copy.",
+      "redact": [
+        {
+          "mode": "last4",
+          "select": "tag:pii.ssn"
+        },
+        {
+          "mode": "last4",
+          "select": "tag:pii.bank"
+        },
+        {
+          "mode": "full",
+          "select": "tag:pii.pin"
+        }
+      ],
+      "stamp": [
+        {
+          "id": "stamp.p1",
+          "page": 0,
+          "box": [106, 380, 400, 32],
+          "style": "stamp",
+          "text": "CLIENT COPY — DO NOT FILE"
+        },
+        {
+          "id": "stamp.p2",
+          "page": 1,
+          "box": [106, 380, 400, 32],
+          "style": "stamp",
+          "text": "CLIENT COPY — DO NOT FILE"
+        }
+      ]
+    },
+    "filing": {
+      "description": "The copy that goes to the IRS. Nothing is masked and nothing is stamped."
+    }
+  },
+  "fields": [
+    {
+      "id": "taxpayer.firstName",
+      "kind": "text",
+      "page": 0,
+      "box": [36.0, 94.0, 215.2, 14.0],
+      "style": "entry",
+      "format": "upperText",
+      "bind": {
+        "required": true,
+        "fallback": [
+          "$.taxpayer.primary.name.first"
+        ],
+        "path": "$.taxpayer.primary.name.firstAndInitial"
+      },
+      "refs": {
+        "acroField": "f1_14[0]",
+        "label": "Your first name and middle initial"
+      }
+    },
+    {
+      "id": "taxpayer.lastName",
+      "kind": "text",
+      "page": 0,
+      "box": [253.0, 94.0, 214.2, 14.0],
+      "style": "entry",
+      "format": "upperText",
+      "bind": {
+        "required": true,
+        "path": "$.taxpayer.primary.name.last"
+      },
+      "refs": {
+        "acroField": "f1_15[0]",
+        "label": "Last name"
+      }
+    },
+    {
+      "id": "taxpayer.ssn",
+      "kind": "text",
+      "page": 0,
+      "box": [467.94, 94.0, 108.06, 14.0],
+      "layout": {
+        "cells": [
+          [0.0, 10.9],
+          [10.9, 10.9],
+          [21.8, 10.9],
+          [32.7, 10.86],
+          [43.56, 10.86],
+          [54.42, 13.41],
+          [67.83, 13.41],
+          [81.24, 13.41],
+          [94.65, 13.41]
+        ],
+        "mode": "comb"
+      },
+      "style": "comb",
+      "format": "ssn",
+      "bind": {
+        "required": true,
+        "path": "$.taxpayer.primary.ssn"
+      },
+      "tags": [
+        "pii.ssn",
+        "identity"
+      ],
+      "refs": {
+        "acroField": "f1_16[0]",
+        "label": "Your social security number",
+        "mef": "PrimarySSN"
+      }
+    },
+    {
+      "id": "spouse.firstName",
+      "kind": "text",
+      "page": 0,
+      "box": [36.0, 118.0, 215.2, 14.0],
+      "style": "entry",
+      "format": "upperText",
+      "bind": {
+        "fallback": [
+          "$.taxpayer.spouse.name.first"
+        ],
+        "path": "$.taxpayer.spouse.name.firstAndInitial"
+      },
+      "when": "$.return.filingStatus in [\"MFJ\",\"MFS\",\"QSS\"]",
+      "refs": {
+        "acroField": "f1_17[0]",
+        "label": "Spouse's first name and middle initial"
+      }
+    },
+    {
+      "id": "spouse.lastName",
+      "kind": "text",
+      "page": 0,
+      "box": [253.0, 118.0, 214.2, 14.0],
+      "style": "entry",
+      "format": "upperText",
+      "bind": "$.taxpayer.spouse.name.last",
+      "when": "$.return.filingStatus in [\"MFJ\",\"MFS\",\"QSS\"]",
+      "refs": {
+        "acroField": "f1_18[0]",
+        "label": "Last name"
+      }
+    },
+    {
+      "id": "spouse.ssn",
+      "kind": "text",
+      "page": 0,
+      "box": [467.94, 118.0, 108.06, 14.0],
+      "layout": {
+        "cells": [
+          [0.0, 10.9],
+          [10.9, 10.9],
+          [21.8, 10.9],
+          [32.7, 10.86],
+          [43.56, 10.86],
+          [54.42, 13.41],
+          [67.83, 13.41],
+          [81.24, 13.41],
+          [94.65, 13.41]
+        ],
+        "mode": "comb"
+      },
+      "style": "comb",
+      "format": "ssn",
+      "bind": "$.taxpayer.spouse.ssn",
+      "when": "$.return.filingStatus in [\"MFJ\",\"MFS\",\"QSS\"]",
+      "tags": [
+        "pii.ssn",
+        "identity"
+      ],
+      "refs": {
+        "acroField": "f1_19[0]",
+        "label": "Spouse's social security number",
+        "mef": "SpouseSSN"
+      }
+    },
+    {
+      "id": "address.street",
+      "kind": "text",
+      "page": 0,
+      "box": [36.0, 142.0, 380.9, 14.0],
+      "style": "entry",
+      "format": "upperText",
+      "bind": {
+        "required": true,
+        "path": "$.taxpayer.address.street"
+      },
+      "refs": {
+        "acroField": "f1_20[0]",
+        "label": "Home address (number and street)"
+      }
+    },
+    {
+      "id": "address.apt",
+      "kind": "text",
+      "page": 0,
+      "box": [418.6, 142.0, 48.6, 14.0],
+      "style": "entry",
+      "format": "upperText",
+      "bind": "$.taxpayer.address.apartment",
+      "refs": {
+        "acroField": "f1_21[0]",
+        "label": "Apt. no."
+      }
+    },
+    {
+      "id": "address.city",
+      "kind": "text",
+      "page": 0,
+      "box": [36.0, 166.0, 294.4, 14.0],
+      "style": "entry",
+      "format": "upperText",
+      "bind": {
+        "required": true,
+        "path": "$.taxpayer.address.city"
+      },
+      "refs": {
+        "acroField": "f1_22[0]",
+        "label": "City, town, or post office"
+      }
+    },
+    {
+      "id": "address.state",
+      "kind": "text",
+      "page": 0,
+      "box": [332.2, 166.0, 63.1, 14.0],
+      "style": "entry",
+      "format": "stateCode",
+      "bind": "$.taxpayer.address.state",
+      "refs": {
+        "acroField": "f1_23[0]",
+        "label": "State"
+      }
+    },
+    {
+      "id": "address.zip",
+      "kind": "text",
+      "page": 0,
+      "box": [397.0, 166.0, 70.2, 14.0],
+      "style": "entry",
+      "format": "zip",
+      "bind": "$.taxpayer.address.zip",
+      "refs": {
+        "acroField": "f1_24[0]",
+        "label": "ZIP code"
+      }
+    },
+    {
+      "id": "address.foreignCountry",
+      "kind": "text",
+      "page": 0,
+      "box": [36.0, 190.0, 186.4, 14.0],
+      "style": "entry",
+      "format": "upperText",
+      "bind": "$.taxpayer.address.foreign.country",
+      "when": "$.taxpayer.address.foreign exists",
+      "refs": {
+        "acroField": "f1_25[0]",
+        "label": "Foreign country name"
+      }
+    },
+    {
+      "id": "address.foreignProvince",
+      "kind": "text",
+      "page": 0,
+      "box": [224.2, 190.0, 171.1, 14.0],
+      "style": "entry",
+      "format": "upperText",
+      "bind": "$.taxpayer.address.foreign.province",
+      "when": "$.taxpayer.address.foreign exists",
+      "refs": {
+        "acroField": "f1_26[0]",
+        "label": "Foreign province/state/county"
+      }
+    },
+    {
+      "id": "address.foreignPostalCode",
+      "kind": "text",
+      "page": 0,
+      "box": [397.0, 190.0, 70.2, 14.0],
+      "style": "entry",
+      "format": "upperText",
+      "bind": "$.taxpayer.address.foreign.postalCode",
+      "when": "$.taxpayer.address.foreign exists",
+      "refs": {
+        "acroField": "f1_27[0]",
+        "label": "Foreign postal code"
+      }
+    },
+    {
+      "id": "mainHomeInUS",
+      "kind": "mark",
+      "page": 0,
+      "box": [568.0, 146.75, 8.0, 8.0],
+      "when": "$.return.mainHomeInUS isTrue",
+      "refs": {
+        "acroField": "c1_5[0]",
+        "label": "Main home (and spouse's, if joint) in the U.S. for more than half of 2025"
+      }
+    },
+    {
+      "id": "presidentialCampaign.you",
+      "kind": "mark",
+      "page": 0,
+      "box": [482.4, 194.5, 8.0, 8.0],
+      "when": "$.return.presidentialElectionCampaign.taxpayer isTrue",
+      "refs": {
+        "acroField": "c1_6[0]",
+        "label": "Presidential Election Campaign — You"
+      }
+    },
+    {
+      "id": "presidentialCampaign.spouse",
+      "kind": "mark",
+      "page": 0,
+      "box": [525.6, 194.5, 8.0, 8.0],
+      "when": "$.return.presidentialElectionCampaign.spouse isTrue",
+      "refs": {
+        "acroField": "c1_7[0]",
+        "label": "Presidential Election Campaign — Spouse"
+      }
+    },
+    {
+      "id": "filingStatus",
+      "kind": "choice",
+      "page": 0,
+      "options": [
+        {
+          "box": [97.6, 206.0, 8.0, 8.0],
+          "value": "SINGLE"
+        },
+        {
+          "box": [97.6, 218.0, 8.0, 8.0],
+          "value": "MFJ"
+        },
+        {
+          "box": [97.6, 230.0, 8.0, 8.0],
+          "value": "MFS"
+        },
+        {
+          "box": [349.6, 206.0, 8.0, 8.0],
+          "value": "HOH"
+        },
+        {
+          "box": [349.6, 218.0, 8.0, 8.0],
+          "value": "QSS"
+        }
+      ],
+      "mark": {
+        "style": "glyph",
+        "glyph": "X",
+        "inset": 0.5
+      },
+      "bind": {
+        "required": true,
+        "path": "$.return.filingStatus"
+      },
+      "tags": [
+        "identity"
+      ],
+      "refs": {
+        "label": "Filing Status",
+        "mef": "IndividualReturnFilingStatusCd",
+        "note": "The XFA form reuses the AcroForm name c1_8[n] across two columns; TFA ids are unique by construction."
+      }
+    },
+    {
+      "id": "filingStatus.mfsSpouseName",
+      "kind": "text",
+      "page": 0,
+      "box": [180.0, 240.0, 144.0, 12.0],
+      "style": "entry",
+      "format": "upperText",
+      "bind": "$.taxpayer.spouse.name.full",
+      "when": "$.return.filingStatus == \"MFS\"",
+      "refs": {
+        "acroField": "f1_28[0]",
+        "label": "MFS: spouse's full name"
+      }
+    },
+    {
+      "id": "filingStatus.hohQssChildName",
+      "kind": "text",
+      "page": 0,
+      "box": [362.0, 246.0, 214.0, 12.0],
+      "style": "entry",
+      "format": "upperText",
+      "bind": "$.return.qualifyingPerson.name.full",
+      "when": {
+        "allOf": [
+          "$.return.filingStatus in [\"HOH\",\"QSS\"]",
+          "$.return.qualifyingPerson.isDependent isFalse"
+        ]
+      },
+      "refs": {
+        "acroField": "f1_29[0]",
+        "label": "HOH/QSS qualifying child name"
+      }
+    },
+    {
+      "id": "digitalAssets",
+      "kind": "choice",
+      "page": 0,
+      "options": [
+        {
+          "box": [518.4, 287.0, 8.0, 8.0],
+          "value": true
+        },
+        {
+          "box": [554.4, 287.0, 8.0, 8.0],
+          "value": false
+        }
+      ],
+      "mark": {
+        "glyph": "X",
+        "inset": 0.5
+      },
+      "bind": {
+        "required": true,
+        "path": "$.return.digitalAssets.hadActivity"
+      },
+      "refs": {
+        "label": "Digital Assets — Yes/No"
+      }
+    },
+    {
+      "id": "dependents",
+      "kind": "repeat",
+      "page": 0,
+      "slots": {
+        "advance": {
+          "dx": 108,
+          "dy": 0
+        },
+        "count": 4
+      },
+      "template": [
+        {
+          "id": "firstName",
+          "kind": "text",
+          "box": [145.0, 309.0, 106.2, 12.0],
+          "style": "cell",
+          "format": "upperText",
+          "bind": "@.name.first",
+          "refs": {
+            "acroField": "f1_31[0]",
+            "label": "First name",
+            "line": "(1)"
+          }
+        },
+        {
+          "id": "lastName",
+          "kind": "text",
+          "box": [145.0, 321.0, 106.2, 12.0],
+          "style": "cell",
+          "format": "upperText",
+          "bind": "@.name.last",
+          "refs": {
+            "acroField": "f1_35[0]",
+            "label": "Last name",
+            "line": "(2)"
+          }
+        },
+        {
+          "id": "ssn",
+          "kind": "text",
+          "box": [143.94, 333.0, 108.0, 12.0],
+          "layout": {
+            "cells": [
+              [0.0, 12.1],
+              [12.1, 12.1],
+              [24.2, 12.1],
+              [36.3, 12.15],
+              [48.45, 12.15],
+              [60.6, 11.85],
+              [72.45, 11.85],
+              [84.3, 11.85],
+              [96.15, 11.85]
+            ],
+            "mode": "comb"
+          },
+          "style": "combSmall",
+          "format": "ssn",
+          "bind": {
+            "required": true,
+            "path": "@.ssn"
+          },
+          "tags": [
+            "pii.ssn"
+          ],
+          "refs": {
+            "acroField": "f1_39[0]",
+            "label": "SSN",
+            "line": "(3)"
+          }
+        },
+        {
+          "id": "relationship",
+          "kind": "text",
+          "box": [145.0, 345.0, 106.2, 12.0],
+          "style": "cell",
+          "format": "upperText",
+          "bind": "@.relationship",
+          "refs": {
+            "acroField": "f1_43[0]",
+            "label": "Relationship to you",
+            "line": "(4)"
+          }
+        },
+        {
+          "id": "livedWithYou",
+          "kind": "mark",
+          "box": [169.6, 359.0, 8.0, 8.0],
+          "when": "@.livedWithYouMoreThanHalfYear isTrue",
+          "refs": {
+            "label": "Lived with you more than half of 2025",
+            "line": "(5)(a)"
+          }
+        },
+        {
+          "id": "inUS",
+          "kind": "mark",
+          "box": [169.6, 371.0, 8.0, 8.0],
+          "when": "@.residedInUS isTrue",
+          "refs": {
+            "label": "And in the U.S.",
+            "line": "(5)(b)"
+          }
+        },
+        {
+          "id": "fullTimeStudent",
+          "kind": "mark",
+          "box": [148.0, 383.0, 8.0, 8.0],
+          "when": "@.fullTimeStudent isTrue",
+          "refs": {
+            "label": "Full-time student",
+            "line": "(6)"
+          }
+        },
+        {
+          "id": "disabled",
+          "kind": "mark",
+          "box": [198.4, 383.0, 8.0, 8.0],
+          "when": "@.permanentlyAndTotallyDisabled isTrue",
+          "refs": {
+            "label": "Permanently and totally disabled",
+            "line": "(6)"
+          }
+        },
+        {
+          "id": "childTaxCredit",
+          "kind": "mark",
+          "box": [148.0, 404.0, 8.0, 8.0],
+          "when": "@.credit == \"CTC\"",
+          "refs": {
+            "label": "Child tax credit",
+            "line": "(7)"
+          }
+        },
+        {
+          "id": "otherDependentCredit",
+          "kind": "mark",
+          "box": [198.4, 404.0, 8.0, 8.0],
+          "when": "@.credit == \"ODC\"",
+          "refs": {
+            "label": "Credit for other dependents",
+            "line": "(7)"
+          }
+        }
+      ],
+      "bind": "$.return.dependents",
+      "overflow": {
+        "onOverflow": [
+          {
+            "id": "dependents.moreThanFour",
+            "kind": "mark",
+            "box": [79.7, 368.5, 8.0, 8.0],
+            "refs": {
+              "acroField": "c1_11[0]",
+              "label": "If more than four dependents, check here"
+            }
+          }
+        ],
+        "statementId": "form1040-dependents-continuation",
+        "strategy": "statement",
+        "title": "Additional dependents"
+      },
+      "refs": {
+        "label": "Dependents"
+      }
+    },
+    {
+      "id": "line1a",
+      "kind": "text",
+      "page": 0,
+      "box": [504.0, 450.0, 72.0, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": {
+        "path": "$.documents.formW2[*].box1.wagesTipsOtherComp",
+        "transform": [
+          {
+            "op": "sum"
+          },
+          {
+            "decimals": 0,
+            "op": "round"
+          }
+        ]
+      },
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_47[0]",
+        "label": "Total amount from Form(s) W-2, box 1",
+        "line": "1a",
+        "mef": "WagesAmt"
+      }
+    },
+    {
+      "id": "line1b",
+      "kind": "text",
+      "page": 0,
+      "box": [504.0, 462.0, 72.0, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "$.return.income.householdEmployeeWages",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_48[0]",
+        "label": "Household employee wages not on Form(s) W-2",
+        "line": "1b"
+      }
+    },
+    {
+      "id": "line1c",
+      "kind": "text",
+      "page": 0,
+      "box": [504.0, 474.0, 72.0, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "$.return.income.tipIncomeNotReported",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_49[0]",
+        "label": "Tip income not reported on line 1a",
+        "line": "1c"
+      }
+    },
+    {
+      "id": "line1d",
+      "kind": "text",
+      "page": 0,
+      "box": [504.0, 486.0, 72.0, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "$.return.income.medicaidWaiverPayments",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_50[0]",
+        "label": "Medicaid waiver payments not on Form(s) W-2",
+        "line": "1d"
+      }
+    },
+    {
+      "id": "line1e",
+      "kind": "text",
+      "page": 0,
+      "box": [504.0, 498.0, 72.0, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "$.return.income.taxableDependentCareBenefits",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_51[0]",
+        "label": "Taxable dependent care benefits (Form 2441, line 26)",
+        "line": "1e"
+      }
+    },
+    {
+      "id": "line1f",
+      "kind": "text",
+      "page": 0,
+      "box": [504.0, 510.0, 72.0, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "$.return.income.employerAdoptionBenefits",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_52[0]",
+        "label": "Employer-provided adoption benefits (Form 8839, line 31)",
+        "line": "1f"
+      }
+    },
+    {
+      "id": "line1g",
+      "kind": "text",
+      "page": 0,
+      "box": [504.0, 522.0, 72.0, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "$.return.income.wagesFrom8919",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_53[0]",
+        "label": "Wages from Form 8919, line 6",
+        "line": "1g"
+      }
+    },
+    {
+      "id": "line1h.type",
+      "kind": "text",
+      "page": 0,
+      "box": [344.2, 534.0, 131.0, 11.0],
+      "style": "entrySmall",
+      "format": "upperText",
+      "bind": "$.return.income.otherEarnedIncome.description",
+      "refs": {
+        "acroField": "f1_54[0]",
+        "label": "Other earned income — type",
+        "line": "1h"
+      }
+    },
+    {
+      "id": "line1h",
+      "kind": "text",
+      "page": 0,
+      "box": [504.0, 534.0, 72.0, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "$.return.income.otherEarnedIncome.amount",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_55[0]",
+        "label": "Other earned income",
+        "line": "1h"
+      }
+    },
+    {
+      "id": "line1i",
+      "kind": "text",
+      "page": 0,
+      "box": [410.4, 546.0, 71.2, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "$.return.income.nontaxableCombatPayElection",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_56[0]",
+        "label": "Nontaxable combat pay election",
+        "line": "1i"
+      }
+    },
+    {
+      "id": "line1z",
+      "kind": "text",
+      "page": 0,
+      "box": [504.0, 558.0, 72.0, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "$.computed.line1z.totalWages",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_57[0]",
+        "label": "Add lines 1a through 1h",
+        "line": "1z"
+      }
+    },
+    {
+      "id": "line2a",
+      "kind": "text",
+      "page": 0,
+      "box": [252.0, 570.0, 71.2, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": {
+        "path": "$.documents.form1099Int[*].box8.taxExemptInterest",
+        "transform": [
+          {
+            "op": "sum"
+          },
+          {
+            "decimals": 0,
+            "op": "round"
+          }
+        ]
+      },
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_58[0]",
+        "label": "Tax-exempt interest",
+        "line": "2a"
+      }
+    },
+    {
+      "id": "line2b",
+      "kind": "text",
+      "page": 0,
+      "box": [504.0, 570.0, 72.0, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": {
+        "path": "$.documents.form1099Int[*].box1.interestIncome",
+        "transform": [
+          {
+            "op": "sum"
+          },
+          {
+            "decimals": 0,
+            "op": "round"
+          }
+        ]
+      },
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_59[0]",
+        "label": "Taxable interest",
+        "line": "2b",
+        "mef": "TaxableInterestAmt"
+      }
+    },
+    {
+      "id": "line3a",
+      "kind": "text",
+      "page": 0,
+      "box": [252.0, 582.0, 71.2, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": {
+        "path": "$.documents.form1099Div[*].box1b.qualifiedDividends",
+        "transform": [
+          {
+            "op": "sum"
+          },
+          {
+            "decimals": 0,
+            "op": "round"
+          }
+        ]
+      },
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_60[0]",
+        "label": "Qualified dividends",
+        "line": "3a"
+      }
+    },
+    {
+      "id": "line3b",
+      "kind": "text",
+      "page": 0,
+      "box": [504.0, 582.0, 72.0, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": {
+        "path": "$.documents.form1099Div[*].box1a.ordinaryDividends",
+        "transform": [
+          {
+            "op": "sum"
+          },
+          {
+            "decimals": 0,
+            "op": "round"
+          }
+        ]
+      },
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_61[0]",
+        "label": "Ordinary dividends",
+        "line": "3b",
+        "mef": "OrdinaryDividendsAmt"
+      }
+    },
+    {
+      "id": "line4a",
+      "kind": "text",
+      "page": 0,
+      "box": [252.0, 606.0, 71.2, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": {
+        "path": "$.documents.form1099R[?@.distributionType == \"IRA\"].box1.grossDistribution",
+        "transform": [
+          {
+            "op": "sum"
+          },
+          {
+            "decimals": 0,
+            "op": "round"
+          }
+        ]
+      },
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_62[0]",
+        "label": "IRA distributions",
+        "line": "4a"
+      }
+    },
+    {
+      "id": "line4b",
+      "kind": "text",
+      "page": 0,
+      "box": [504.0, 606.0, 72.0, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "$.computed.line4b.iraTaxableAmount",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_63[0]",
+        "label": "IRA distributions — taxable amount",
+        "line": "4b"
+      }
+    },
+    {
+      "id": "line5a",
+      "kind": "text",
+      "page": 0,
+      "box": [252.0, 630.0, 71.2, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": {
+        "path": "$.documents.form1099R[?@.distributionType == \"PENSION\"].box1.grossDistribution",
+        "transform": [
+          {
+            "op": "sum"
+          },
+          {
+            "decimals": 0,
+            "op": "round"
+          }
+        ]
+      },
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_65[0]",
+        "label": "Pensions and annuities",
+        "line": "5a"
+      }
+    },
+    {
+      "id": "line5b",
+      "kind": "text",
+      "page": 0,
+      "box": [504.0, 630.0, 72.0, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "$.computed.line5b.pensionsTaxableAmount",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_66[0]",
+        "label": "Pensions and annuities — taxable amount",
+        "line": "5b"
+      }
+    },
+    {
+      "id": "line6a",
+      "kind": "text",
+      "page": 0,
+      "box": [252.0, 654.0, 71.2, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "$.documents.formSSA1099.box5.netBenefits",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_68[0]",
+        "label": "Social security benefits",
+        "line": "6a"
+      }
+    },
+    {
+      "id": "line6b",
+      "kind": "text",
+      "page": 0,
+      "box": [504.0, 654.0, 72.0, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "$.computed.line6b.socialSecurityTaxableAmount",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_69[0]",
+        "label": "Social security — taxable amount",
+        "line": "6b"
+      }
+    },
+    {
+      "id": "line7a",
+      "kind": "text",
+      "page": 0,
+      "box": [504.0, 690.0, 72.0, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "$.computed.line7a.capitalGainOrLoss",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_70[0]",
+        "label": "Capital gain or (loss)",
+        "line": "7a"
+      }
+    },
+    {
+      "id": "line8",
+      "kind": "text",
+      "page": 0,
+      "box": [504.0, 714.0, 72.0, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "$.schedules.schedule1.line10.additionalIncome",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_72[0]",
+        "label": "Additional income from Schedule 1, line 10",
+        "line": "8"
+      }
+    },
+    {
+      "id": "line9",
+      "kind": "text",
+      "page": 0,
+      "box": [504.0, 726.0, 72.0, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "$.computed.line9.totalIncome",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_73[0]",
+        "label": "Total income",
+        "line": "9",
+        "mef": "TotalIncomeAmt"
+      }
+    },
+    {
+      "id": "line10",
+      "kind": "text",
+      "page": 0,
+      "box": [504.0, 738.0, 72.0, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "$.schedules.schedule1.line26.adjustmentsToIncome",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_74[0]",
+        "label": "Adjustments to income from Schedule 1, line 26",
+        "line": "10",
+        "mef": "TotalAdjustmentsAmt"
+      }
+    },
+    {
+      "id": "line11a",
+      "kind": "text",
+      "page": 0,
+      "box": [504.0, 750.0, 72.0, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": {
+        "required": true,
+        "path": "$.computed.line11a.adjustedGrossIncome"
+      },
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f1_75[0]",
+        "label": "Adjusted gross income",
+        "line": "11a",
+        "mef": "AdjustedGrossIncomeAmt"
+      }
+    },
+    {
+      "id": "line11b",
+      "kind": "text",
+      "page": 1,
+      "box": [504.0, 36.0, 72.0, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": {
+        "required": true,
+        "path": "$.computed.line11a.adjustedGrossIncome"
+      },
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f2_01[0]",
+        "label": "Amount from line 11a (adjusted gross income)",
+        "line": "11b"
+      }
+    },
+    {
+      "id": "line12a.claimedAsDependent",
+      "kind": "mark",
+      "page": 1,
+      "box": [203.6, 50.0, 8.0, 8.0],
+      "when": "$.return.someoneCanClaim.taxpayer isTrue",
+      "refs": {
+        "acroField": "c2_1[0]",
+        "label": "You as a dependent",
+        "line": "12a"
+      }
+    },
+    {
+      "id": "line12a.spouseClaimedAsDependent",
+      "kind": "mark",
+      "page": 1,
+      "box": [304.4, 50.0, 8.0, 8.0],
+      "when": "$.return.someoneCanClaim.spouse isTrue",
+      "refs": {
+        "acroField": "c2_2[0]",
+        "label": "Your spouse as a dependent",
+        "line": "12a"
+      }
+    },
+    {
+      "id": "line12d.youBornBefore1961",
+      "kind": "mark",
+      "page": 1,
+      "box": [153.2, 74.0, 8.0, 8.0],
+      "when": "$.return.ageBlind.taxpayer.age65OrOlder isTrue",
+      "refs": {
+        "acroField": "c2_5[0]",
+        "label": "You: born before January 2, 1961",
+        "line": "12d"
+      }
+    },
+    {
+      "id": "line12d.youBlind",
+      "kind": "mark",
+      "page": 1,
+      "box": [311.6, 74.0, 8.0, 8.0],
+      "when": "$.return.ageBlind.taxpayer.blind isTrue",
+      "refs": {
+        "acroField": "c2_6[0]",
+        "label": "You: are blind",
+        "line": "12d"
+      }
+    },
+    {
+      "id": "line12d.spouseBornBefore1961",
+      "kind": "mark",
+      "page": 1,
+      "box": [153.2, 86.0, 8.0, 8.0],
+      "when": "$.return.ageBlind.spouse.age65OrOlder isTrue",
+      "refs": {
+        "acroField": "c2_7[0]",
+        "label": "Spouse: born before January 2, 1961",
+        "line": "12d"
+      }
+    },
+    {
+      "id": "line12d.spouseBlind",
+      "kind": "mark",
+      "page": 1,
+      "box": [311.6, 86.0, 8.0, 8.0],
+      "when": "$.return.ageBlind.spouse.blind isTrue",
+      "refs": {
+        "acroField": "c2_8[0]",
+        "label": "Spouse: is blind",
+        "line": "12d"
+      }
+    },
+    {
+      "id": "line12e",
+      "kind": "text",
+      "page": 1,
+      "box": [504.0, 96.0, 72.0, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "$.computed.line12e.standardOrItemizedDeduction",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f2_02[0]",
+        "label": "Standard deduction or itemized deductions",
+        "line": "12e",
+        "mef": "TotalItemizedOrStandardDedAmt"
+      }
+    },
+    {
+      "id": "line13a",
+      "kind": "text",
+      "page": 1,
+      "box": [504.0, 108.0, 72.0, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "$.computed.line13a.qualifiedBusinessIncomeDeduction",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f2_03[0]",
+        "label": "Qualified business income deduction",
+        "line": "13a"
+      }
+    },
+    {
+      "id": "line13b",
+      "kind": "text",
+      "page": 1,
+      "box": [504.0, 120.0, 72.0, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "$.schedules.schedule1A.line38.additionalDeductions",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f2_04[0]",
+        "label": "Additional deductions from Schedule 1-A, line 38",
+        "line": "13b"
+      }
+    },
+    {
+      "id": "line14",
+      "kind": "text",
+      "page": 1,
+      "box": [504.0, 132.0, 72.0, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "$.computed.line14.totalDeductions",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f2_05[0]",
+        "label": "Add lines 12e, 13a, and 13b",
+        "line": "14"
+      }
+    },
+    {
+      "id": "line15",
+      "kind": "text",
+      "page": 1,
+      "box": [504.0, 144.0, 72.0, 12.0],
+      "style": "money",
+      "format": "wholeUSDzeroDash",
+      "bind": "$.computed.line15.taxableIncome",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f2_06[0]",
+        "label": "Taxable income",
+        "line": "15",
+        "mef": "TaxableIncomeAmt"
+      }
+    },
+    {
+      "id": "line16",
+      "kind": "text",
+      "page": 1,
+      "box": [504.0, 156.0, 72.0, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "$.computed.line16.tax",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f2_08[0]",
+        "label": "Tax",
+        "line": "16",
+        "mef": "TaxAmt"
+      }
+    },
+    {
+      "id": "line17",
+      "kind": "text",
+      "page": 1,
+      "box": [504.0, 168.0, 72.0, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "$.schedules.schedule2.line3.additionalTax",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f2_09[0]",
+        "label": "Amount from Schedule 2, line 3",
+        "line": "17"
+      }
+    },
+    {
+      "id": "line18",
+      "kind": "text",
+      "page": 1,
+      "box": [504.0, 180.0, 72.0, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "$.computed.line18.taxPlusSchedule2",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f2_10[0]",
+        "label": "Add lines 16 and 17",
+        "line": "18"
+      }
+    },
+    {
+      "id": "line19",
+      "kind": "text",
+      "page": 1,
+      "box": [504.0, 192.0, 72.0, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "$.computed.line19.childTaxCreditOrODC",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f2_11[0]",
+        "label": "Child tax credit or credit for other dependents",
+        "line": "19"
+      }
+    },
+    {
+      "id": "line20",
+      "kind": "text",
+      "page": 1,
+      "box": [504.0, 204.0, 72.0, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "$.schedules.schedule3.line8.nonrefundableCredits",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f2_12[0]",
+        "label": "Amount from Schedule 3, line 8",
+        "line": "20"
+      }
+    },
+    {
+      "id": "line21",
+      "kind": "text",
+      "page": 1,
+      "box": [504.0, 216.0, 72.0, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "$.computed.line21.totalCredits",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f2_13[0]",
+        "label": "Add lines 19 and 20",
+        "line": "21"
+      }
+    },
+    {
+      "id": "line22",
+      "kind": "text",
+      "page": 1,
+      "box": [504.0, 228.0, 72.0, 12.0],
+      "style": "money",
+      "format": "wholeUSDzeroDash",
+      "bind": "$.computed.line22.taxLessCredits",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f2_14[0]",
+        "label": "Subtract line 21 from line 18",
+        "line": "22"
+      }
+    },
+    {
+      "id": "line23",
+      "kind": "text",
+      "page": 1,
+      "box": [504.0, 240.0, 72.0, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "$.schedules.schedule2.line21.otherTaxes",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f2_15[0]",
+        "label": "Other taxes, including self-employment tax",
+        "line": "23"
+      }
+    },
+    {
+      "id": "line24",
+      "kind": "text",
+      "page": 1,
+      "box": [504.0, 252.0, 72.0, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "$.computed.line24.totalTax",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f2_16[0]",
+        "label": "Total tax",
+        "line": "24",
+        "mef": "TotalTaxAmt"
+      }
+    },
+    {
+      "id": "line25a",
+      "kind": "text",
+      "page": 1,
+      "box": [410.4, 276.0, 71.2, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": {
+        "path": "$.documents.formW2[*].box2.federalIncomeTaxWithheld",
+        "transform": [
+          {
+            "op": "sum"
+          },
+          {
+            "decimals": 0,
+            "op": "round"
+          }
+        ]
+      },
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f2_17[0]",
+        "label": "Federal income tax withheld from Form(s) W-2",
+        "line": "25a"
+      }
+    },
+    {
+      "id": "line25b",
+      "kind": "text",
+      "page": 1,
+      "box": [410.4, 288.0, 71.2, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": {
+        "fallback": [
+          "$.return.payments.withholding.form1099"
+        ],
+        "path": "$.documents.form1099Misc[*].federalIncomeTaxWithheld",
+        "transform": [
+          {
+            "op": "sum"
+          },
+          {
+            "decimals": 0,
+            "op": "round"
+          }
+        ]
+      },
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f2_18[0]",
+        "label": "Federal income tax withheld from Form(s) 1099",
+        "line": "25b"
+      }
+    },
+    {
+      "id": "line25c",
+      "kind": "text",
+      "page": 1,
+      "box": [410.4, 300.0, 71.2, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "$.return.payments.withholding.otherForms",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f2_19[0]",
+        "label": "Federal income tax withheld from other forms",
+        "line": "25c"
+      }
+    },
+    {
+      "id": "line25d",
+      "kind": "text",
+      "page": 1,
+      "box": [504.0, 312.0, 72.0, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "$.computed.line25d.totalWithholding",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f2_20[0]",
+        "label": "Add lines 25a through 25c",
+        "line": "25d",
+        "mef": "WithholdingTaxAmt"
+      }
+    },
+    {
+      "id": "line26",
+      "kind": "text",
+      "page": 1,
+      "box": [504.0, 324.0, 72.0, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "$.return.payments.estimatedTaxPayments",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f2_21[0]",
+        "label": "2025 estimated tax payments and amount applied from 2024 return",
+        "line": "26"
+      }
+    },
+    {
+      "id": "line27a",
+      "kind": "text",
+      "page": 1,
+      "box": [410.4, 360.0, 71.2, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "$.computed.line27a.earnedIncomeCredit",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f2_23[0]",
+        "label": "Earned income credit (EIC)",
+        "line": "27a"
+      }
+    },
+    {
+      "id": "line28",
+      "kind": "text",
+      "page": 1,
+      "box": [410.4, 408.0, 71.2, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "$.computed.line28.additionalChildTaxCredit",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f2_24[0]",
+        "label": "Additional child tax credit from Schedule 8812",
+        "line": "28"
+      }
+    },
+    {
+      "id": "line29",
+      "kind": "text",
+      "page": 1,
+      "box": [410.4, 420.0, 71.2, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "$.computed.line29.americanOpportunityCredit",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f2_25[0]",
+        "label": "American opportunity credit from Form 8863, line 8",
+        "line": "29"
+      }
+    },
+    {
+      "id": "line30",
+      "kind": "text",
+      "page": 1,
+      "box": [410.4, 432.0, 71.2, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "$.computed.line30.refundableAdoptionCredit",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f2_26[0]",
+        "label": "Refundable adoption credit from Form 8839, line 13",
+        "line": "30"
+      }
+    },
+    {
+      "id": "line31",
+      "kind": "text",
+      "page": 1,
+      "box": [410.4, 444.0, 71.2, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "$.schedules.schedule3.line15.otherPayments",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f2_27[0]",
+        "label": "Amount from Schedule 3, line 15",
+        "line": "31"
+      }
+    },
+    {
+      "id": "line32",
+      "kind": "text",
+      "page": 1,
+      "box": [504.0, 456.0, 72.0, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "$.computed.line32.totalOtherPayments",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f2_28[0]",
+        "label": "Total other payments and refundable credits",
+        "line": "32"
+      }
+    },
+    {
+      "id": "line33",
+      "kind": "text",
+      "page": 1,
+      "box": [504.0, 468.0, 72.0, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "$.computed.line33.totalPayments",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f2_29[0]",
+        "label": "Total payments",
+        "line": "33",
+        "mef": "TotalPaymentsAmt"
+      }
+    },
+    {
+      "id": "line34",
+      "kind": "text",
+      "page": 1,
+      "box": [504.0, 480.0, 72.0, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "$.computed.line34.overpaid",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f2_30[0]",
+        "label": "Amount overpaid",
+        "line": "34",
+        "mef": "OverpaidAmt"
+      }
+    },
+    {
+      "id": "line35a",
+      "kind": "text",
+      "page": 1,
+      "box": [504.0, 492.0, 72.0, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "$.return.refund.amountRefunded",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f2_31[0]",
+        "label": "Amount of line 34 refunded to you",
+        "line": "35a",
+        "mef": "RefundAmt"
+      }
+    },
+    {
+      "id": "line35b.routingNumber",
+      "kind": "text",
+      "page": 1,
+      "box": [179.94, 504.0, 129.6, 11.0],
+      "layout": {
+        "cells": [
+          [0.0, 14.4],
+          [14.4, 14.4],
+          [28.8, 14.4],
+          [43.2, 14.4],
+          [57.6, 14.4],
+          [72.0, 14.4],
+          [86.4, 14.4],
+          [100.8, 14.4],
+          [115.2, 14.4]
+        ],
+        "mode": "comb"
+      },
+      "style": "comb",
+      "format": "routingNumber",
+      "bind": "$.return.refund.directDeposit.routingNumber",
+      "when": "$.return.refund.directDeposit exists",
+      "tags": [
+        "pii.bank"
+      ],
+      "refs": {
+        "acroField": "f2_32[0]",
+        "label": "Routing number",
+        "line": "35b"
+      }
+    },
+    {
+      "id": "line35c.accountType",
+      "kind": "choice",
+      "page": 1,
+      "options": [
+        {
+          "box": [377.4, 506.0, 8.0, 8.0],
+          "value": "CHECKING"
+        },
+        {
+          "box": [435.0, 506.0, 8.0, 8.0],
+          "value": "SAVINGS"
+        }
+      ],
+      "mark": {
+        "glyph": "X",
+        "inset": 0.5
+      },
+      "bind": "$.return.refund.directDeposit.accountType",
+      "when": "$.return.refund.directDeposit exists",
+      "refs": {
+        "label": "Account type",
+        "line": "35c"
+      }
+    },
+    {
+      "id": "line35d.accountNumber",
+      "kind": "text",
+      "page": 1,
+      "box": [179.94, 516.0, 244.8, 11.0],
+      "layout": {
+        "cells": [
+          [0.0, 14.4],
+          [14.4, 14.4],
+          [28.8, 14.4],
+          [43.2, 14.4],
+          [57.6, 14.4],
+          [72.0, 14.4],
+          [86.4, 14.4],
+          [100.8, 14.4],
+          [115.2, 14.4],
+          [129.6, 14.4],
+          [144.0, 14.4],
+          [158.4, 14.4],
+          [172.8, 14.4],
+          [187.20000000000002, 14.4],
+          [201.6, 14.4],
+          [216.0, 14.4],
+          [230.4, 14.4]
+        ],
+        "mode": "comb"
+      },
+      "style": "comb",
+      "format": "accountNumber",
+      "bind": "$.return.refund.directDeposit.accountNumber",
+      "when": "$.return.refund.directDeposit exists",
+      "tags": [
+        "pii.bank"
+      ],
+      "refs": {
+        "acroField": "f2_33[0]",
+        "label": "Account number",
+        "line": "35d"
+      }
+    },
+    {
+      "id": "line36",
+      "kind": "text",
+      "page": 1,
+      "box": [410.4, 528.0, 71.2, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "$.return.refund.appliedToNextYear",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f2_34[0]",
+        "label": "Amount applied to your 2026 estimated tax",
+        "line": "36"
+      }
+    },
+    {
+      "id": "line37",
+      "kind": "text",
+      "page": 1,
+      "box": [504.0, 552.0, 72.0, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "$.computed.line37.amountYouOwe",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f2_35[0]",
+        "label": "Amount you owe",
+        "line": "37",
+        "mef": "AmountOwedAmt"
+      }
+    },
+    {
+      "id": "line38",
+      "kind": "text",
+      "page": 1,
+      "box": [410.4, 564.0, 71.2, 12.0],
+      "style": "money",
+      "format": "wholeUSD",
+      "bind": "$.computed.line38.estimatedTaxPenalty",
+      "tags": [
+        "money"
+      ],
+      "refs": {
+        "acroField": "f2_36[0]",
+        "label": "Estimated tax penalty",
+        "line": "38"
+      }
+    },
+    {
+      "id": "thirdPartyDesignee",
+      "kind": "choice",
+      "page": 1,
+      "options": [
+        {
+          "box": [432.0, 577.7, 8.0, 8.0],
+          "value": true
+        },
+        {
+          "box": [540.0, 577.7, 8.0, 8.0],
+          "value": false
+        }
+      ],
+      "mark": {
+        "glyph": "X",
+        "inset": 0.5
+      },
+      "bind": "$.return.thirdPartyDesignee.authorized",
+      "refs": {
+        "label": "Third Party Designee — Yes/No"
+      }
+    },
+    {
+      "id": "thirdPartyDesignee.name",
+      "kind": "text",
+      "page": 1,
+      "box": [129.6, 594.0, 165.6, 18.0],
+      "style": "entry",
+      "format": "upperText",
+      "bind": "$.return.thirdPartyDesignee.name",
+      "when": "$.return.thirdPartyDesignee.authorized isTrue",
+      "refs": {
+        "acroField": "f2_37[0]",
+        "label": "Designee's name"
+      }
+    },
+    {
+      "id": "thirdPartyDesignee.phone",
+      "kind": "text",
+      "page": 1,
+      "box": [324.0, 594.0, 100.8, 18.0],
+      "style": "entry",
+      "format": "phone",
+      "bind": "$.return.thirdPartyDesignee.phone",
+      "when": "$.return.thirdPartyDesignee.authorized isTrue",
+      "refs": {
+        "acroField": "f2_38[0]",
+        "label": "Designee's phone no."
+      }
+    },
+    {
+      "id": "thirdPartyDesignee.pin",
+      "kind": "text",
+      "page": 1,
+      "box": [504.48, 600.0, 70.92, 11.5],
+      "layout": {
+        "cells": [
+          [0.0, 13.86],
+          [13.86, 14.4],
+          [28.26, 14.4],
+          [42.66, 14.4],
+          [57.06, 13.86]
+        ],
+        "mode": "comb"
+      },
+      "style": "comb",
+      "format": "pin5",
+      "bind": "$.return.thirdPartyDesignee.pin",
+      "when": "$.return.thirdPartyDesignee.authorized isTrue",
+      "tags": [
+        "pii.pin"
+      ],
+      "refs": {
+        "acroField": "f2_39[0]",
+        "label": "Personal identification number (PIN)"
+      }
+    },
+    {
+      "id": "signature.taxpayer",
+      "kind": "image",
+      "page": 1,
+      "box": [91.6, 646.0, 180.0, 20.0],
+      "bind": "$.filing.signatures.taxpayer.imageHref",
+      "when": "$.filing.signatures.taxpayer.imageHref exists",
+      "fit": "contain",
+      "refs": {
+        "label": "Your signature",
+        "note": "Derived from the artwork: the IRS PDF has no widget on the signature rule."
+      }
+    },
+    {
+      "id": "signature.taxpayerDate",
+      "kind": "text",
+      "page": 1,
+      "box": [274.0, 646.0, 48.0, 20.0],
+      "style": "entry",
+      "format": "date",
+      "bind": "$.filing.signatures.taxpayer.signedOn",
+      "refs": {
+        "label": "Date",
+        "note": "Derived from the artwork; no widget on this rule."
+      }
+    },
+    {
+      "id": "occupation.taxpayer",
+      "kind": "text",
+      "page": 1,
+      "box": [325.0, 646.0, 135.1, 20.0],
+      "style": "entry",
+      "format": "upperText",
+      "bind": "$.taxpayer.primary.occupation",
+      "refs": {
+        "acroField": "f2_40[0]",
+        "label": "Your occupation"
+      }
+    },
+    {
+      "id": "ipPin.taxpayer",
+      "kind": "text",
+      "page": 1,
+      "box": [504.48, 654.0, 70.92, 12.0],
+      "layout": {
+        "cells": [
+          [0.0, 11.46],
+          [11.46, 12.0],
+          [23.46, 12.0],
+          [35.46, 12.0],
+          [47.46, 12.0],
+          [59.46, 11.46]
+        ],
+        "mode": "comb"
+      },
+      "style": "comb",
+      "format": "pin6",
+      "bind": "$.taxpayer.primary.identityProtectionPin",
+      "tags": [
+        "pii.pin"
+      ],
+      "refs": {
+        "acroField": "f2_41[0]",
+        "label": "Identity Protection PIN"
+      }
+    },
+    {
+      "id": "signature.spouse",
+      "kind": "image",
+      "page": 1,
+      "box": [91.6, 676.0, 180.0, 20.0],
+      "bind": "$.filing.signatures.spouse.imageHref",
+      "when": { "allOf": ["$.return.filingStatus == \"MFJ\"", "$.filing.signatures.spouse.imageHref exists"] },
+      "fit": "contain",
+      "refs": {
+        "label": "Spouse's signature",
+        "note": "Derived from the artwork: one row below the taxpayer's signature, matching the 30pt occupation widget offset."
+      }
+    },
+    {
+      "id": "signature.spouseDate",
+      "kind": "text",
+      "page": 1,
+      "box": [274.0, 676.0, 48.0, 20.0],
+      "style": "entry",
+      "format": "date",
+      "bind": "$.filing.signatures.spouse.signedOn",
+      "when": "$.return.filingStatus == \"MFJ\"",
+      "refs": {
+        "label": "Spouse's signature date",
+        "note": "Derived from the artwork; no widget on this rule. Joint returns only: both spouses must sign."
+      }
+    },
+    {
+      "id": "occupation.spouse",
+      "kind": "text",
+      "page": 1,
+      "box": [325.0, 676.0, 135.1, 20.0],
+      "style": "entry",
+      "format": "upperText",
+      "bind": "$.taxpayer.spouse.occupation",
+      "when": "$.return.filingStatus in [\"MFJ\",\"MFS\",\"QSS\"]",
+      "refs": {
+        "acroField": "f2_42[0]",
+        "label": "Spouse's occupation"
+      }
+    },
+    {
+      "id": "ipPin.spouse",
+      "kind": "text",
+      "page": 1,
+      "box": [504.48, 684.0, 70.92, 12.0],
+      "layout": {
+        "cells": [
+          [0.0, 11.46],
+          [11.46, 12.0],
+          [23.46, 12.0],
+          [35.46, 12.0],
+          [47.46, 12.0],
+          [59.46, 11.46]
+        ],
+        "mode": "comb"
+      },
+      "style": "comb",
+      "format": "pin6",
+      "bind": "$.taxpayer.spouse.identityProtectionPin",
+      "when": "$.return.filingStatus in [\"MFJ\",\"MFS\",\"QSS\"]",
+      "tags": [
+        "pii.pin"
+      ],
+      "refs": {
+        "acroField": "f2_43[0]",
+        "label": "Spouse's Identity Protection PIN"
+      }
+    },
+    {
+      "id": "contact.phone",
+      "kind": "text",
+      "page": 1,
+      "box": [127.6, 696.0, 145.3, 12.0],
+      "style": "entry",
+      "format": "phone",
+      "bind": "$.taxpayer.contact.phone",
+      "refs": {
+        "acroField": "f2_44[0]",
+        "label": "Phone no."
+      }
+    },
+    {
+      "id": "contact.email",
+      "kind": "text",
+      "page": 1,
+      "box": [324.0, 696.0, 252.0, 12.0],
+      "style": "entry",
+      "format": "text",
+      "bind": "$.taxpayer.contact.email",
+      "refs": {
+        "acroField": "f2_45[0]",
+        "label": "Email address"
+      }
+    },
+    {
+      "id": "preparer.name",
+      "kind": "text",
+      "page": 1,
+      "box": [91.6, 718.0, 130.9, 14.0],
+      "style": "entry",
+      "format": "upperText",
+      "bind": "$.preparer.name",
+      "refs": {
+        "acroField": "f2_46[0]",
+        "label": "Preparer's name"
+      }
+    },
+    {
+      "id": "preparer.ptin",
+      "kind": "text",
+      "page": 1,
+      "box": [454.6, 718.0, 55.8, 14.0],
+      "style": "entry",
+      "format": "text",
+      "bind": "$.preparer.ptin",
+      "refs": {
+        "acroField": "f2_47[0]",
+        "label": "PTIN"
+      }
+    },
+    {
+      "id": "preparer.signature",
+      "kind": "image",
+      "page": 1,
+      "box": [225.6, 718.0, 168.0, 14.0],
+      "bind": "$.preparer.signatureHref",
+      "when": "$.preparer.signatureHref exists",
+      "fit": "contain",
+      "refs": {
+        "label": "Preparer's signature",
+        "note": "Derived from the artwork: no widget; the column rules sit at x 223.1 and 395.9."
+      }
+    },
+    {
+      "id": "preparer.date",
+      "kind": "text",
+      "page": 1,
+      "box": [396.4, 718.0, 55.2, 14.0],
+      "style": "entry",
+      "format": "date",
+      "bind": "$.preparer.signedOn",
+      "when": "$.preparer.signedOn exists",
+      "refs": {
+        "label": "Preparer's date",
+        "note": "Derived from the artwork: no widget; the column rules sit at x 395.9 and 453.5."
+      }
+    },
+    {
+      "id": "preparer.selfEmployed",
+      "kind": "mark",
+      "page": 1,
+      "box": [518.4, 720.5, 8.0, 8.0],
+      "when": "$.preparer.selfEmployed isTrue",
+      "refs": {
+        "acroField": "c2_18[0]",
+        "label": "Check if self-employed"
+      }
+    },
+    {
+      "id": "preparer.firmName",
+      "kind": "text",
+      "page": 1,
+      "box": [134.6, 732.0, 318.3, 12.0],
+      "style": "entry",
+      "format": "upperText",
+      "bind": "$.preparer.firm.name",
+      "refs": {
+        "acroField": "f2_48[0]",
+        "label": "Firm's name"
+      }
+    },
+    {
+      "id": "preparer.firmPhone",
+      "kind": "text",
+      "page": 1,
+      "box": [494.6, 732.0, 81.4, 12.0],
+      "style": "entry",
+      "format": "phone",
+      "bind": "$.preparer.firm.phone",
+      "refs": {
+        "acroField": "f2_49[0]",
+        "label": "Phone no."
+      }
+    },
+    {
+      "id": "preparer.firmAddress",
+      "kind": "text",
+      "page": 1,
+      "box": [142.6, 744.0, 310.3, 12.0],
+      "style": "entry",
+      "format": "upperText",
+      "bind": "$.preparer.firm.address",
+      "refs": {
+        "acroField": "f2_50[0]",
+        "label": "Firm's address"
+      }
+    },
+    {
+      "id": "preparer.firmEin",
+      "kind": "text",
+      "page": 1,
+      "box": [494.6, 744.0, 81.4, 12.0],
+      "style": "entry",
+      "format": "ein",
+      "bind": "$.preparer.firm.ein",
+      "refs": {
+        "acroField": "f2_51[0]",
+        "label": "Firm's EIN"
+      }
+    }
+  ]
+}

@@ -1,0 +1,318 @@
+{
+  "$schema": "../schema/tfa-1.0.schema.json",
+  "$comment": "Schedule B (Form 941), the daily liability report a semiweekly schedule depositor attaches to Form 941. The day grid is twelve repeats, one per printed column per month, each walking a slice of that month's day-indexed liabilities: 186 widgets described by twelve slot-zero boxes and an 18pt advance. The monthly and quarterly totals are the sums the form's own captions ask for, and the quarter total must equal Form 941 line 12, which test/annotations.test.js checks against the sample data.",
+
+  "tfa": "1.0",
+  "id": "us.irs.941-schedule-b:2026",
+  "version": "1.0.0",
+
+  "form": {
+    "authority": "US-IRS",
+    "catalog": "11967Q",
+    "formNumber": "941-SCHEDULE-B",
+    "locale": "en-US",
+    "note": "Rev. March 2024 is the revision the IRS publishes for 2026 quarters. The annotation is pinned to that artwork, not to a tax year.",
+    "omb": "1545-0029",
+    "revision": "2024-03",
+    "taxYear": 2026,
+    "title": "Schedule B (Form 941) — Report of Tax Liability for Semiweekly Schedule Depositors"
+  },
+
+  "media": {
+    "origin": "top-left",
+    "pageCount": 1,
+    "pages": [
+      { "height": 791.968, "index": 0, "rotate": 0, "width": 610.976 }
+    ],
+    "sha256": "95a62159c8367fc50e6b5445f7d80f9a00ac7cdf56d224240fc2776cb545ab63",
+    "units": "pt",
+    "uri": "https://www.irs.gov/pub/irs-pdf/f941sb.pdf"
+  },
+
+  "fonts": {
+    "sans": { "base14": "Helvetica", "bold": "Helvetica-Bold", "family": "Helvetica" }
+  },
+
+  "defaults": {
+    "style": { "align": "left", "color": "#000000", "font": "sans", "size": 9.5, "valign": "middle" },
+    "format": { "type": "text" }
+  },
+
+  "styles": {
+    "comb": { "align": "center", "pad": 0 },
+    "entry": { "fit": { "min": 6, "mode": "shrink" }, "pad": { "left": 4, "right": 4 } },
+    "money": { "align": "right", "fit": { "min": 7, "mode": "shrink" } }
+  },
+
+  "formats": {
+    "text": { "type": "text" },
+    "upperText": { "case": "upper", "type": "text" },
+    "usdCents": { "decimals": 2, "grouping": true, "negative": "minus", "null": "blank", "rounding": "half-up", "type": "number", "zero": "blank" }
+  },
+
+  "profiles": {
+    "client": {
+      "description": "The employer's copy, with the EIN masked.",
+      "redact": [
+        { "mode": "last4", "select": "tag:pii.ein" }
+      ]
+    },
+    "filing": {
+      "description": "The copy that is attached to Form 941."
+    }
+  },
+
+  "fields": [
+    {
+      "id": "employer.einPrefix",
+      "kind": "text",
+      "page": 0,
+      "box": [145.92, 90.0, 44.91, 18.0],
+      "layout": { "mode": "comb", "cells": [[0, 19.44], [25.47, 19.44]] },
+      "style": "comb",
+      "format": "text",
+      "bind": { "required": true, "path": "$.employer.ein", "transform": [{ "op": "digits" }, { "op": "slice", "start": 0, "end": 2 }] },
+      "tags": ["pii.ein"],
+      "refs": { "acroField": "f1_01[0]+f1_02[0]", "label": "EIN — first two digits" }
+    },
+    {
+      "id": "employer.einSuffix",
+      "kind": "text",
+      "page": 0,
+      "box": [209.77, 90.0, 171.83, 18.0],
+      "layout": { "mode": "comb", "cells": [[0, 19.44], [25.4, 19.44], [50.71, 19.44], [76.11, 19.44], [101.5, 19.44], [126.9, 19.44], [152.39, 19.44]] },
+      "style": "comb",
+      "format": "text",
+      "bind": { "required": true, "path": "$.employer.ein", "transform": [{ "op": "digits" }, { "op": "slice", "start": 2, "end": 9 }] },
+      "tags": ["pii.ein"],
+      "refs": { "acroField": "f1_03[0]+f1_04[0]+f1_05[0]+f1_06[0]+f1_07[0]+f1_08[0]+f1_09[0]", "label": "EIN — remaining seven digits" }
+    },
+    {
+      "id": "employer.name",
+      "kind": "text",
+      "page": 0,
+      "box": [130.6, 114.0, 250.0, 18.0],
+      "style": "entry",
+      "format": "upperText",
+      "bind": { "required": true, "path": "$.employer.name" },
+      "refs": { "acroField": "f1_10[0]", "label": "Name (not your trade name)" }
+    },
+    {
+      "id": "calendarYear",
+      "kind": "text",
+      "page": 0,
+      "box": [145.92, 138.0, 95.76, 18.0],
+      "layout": { "mode": "comb", "cells": [[0, 19.44], [25.47, 19.44], [50.83, 19.44], [76.32, 19.44]] },
+      "style": "comb",
+      "format": "text",
+      "bind": { "required": true, "path": "$.filing.year" },
+      "refs": { "acroField": "f1_11[0]+f1_12[0]+f1_13[0]+f1_14[0]", "label": "Calendar year" }
+    },
+    {
+      "id": "quarter",
+      "kind": "choice",
+      "page": 0,
+      "options": [
+        { "box": [420.8, 109.0, 10.0, 10.0], "value": 1 },
+        { "box": [420.8, 127.0, 10.0, 10.0], "value": 2 },
+        { "box": [420.8, 145.0, 10.0, 10.0], "value": 3 },
+        { "box": [420.8, 163.0, 10.0, 10.0], "value": 4 }
+      ],
+      "mark": { "glyph": "X", "inset": 1 },
+      "bind": { "required": true, "path": "$.filing.quarter" },
+      "refs": { "acroField": "c1_1", "label": "Report for this Quarter" }
+    },
+
+    {
+      "id": "month1.days1to8",
+      "kind": "repeat",
+      "page": 0,
+      "bind": "$.scheduleB.months[0].days[0:8]",
+      "slots": { "count": 8, "advance": { "dx": 0, "dy": 18 } },
+      "overflow": { "strategy": "error" },
+      "refs": { "label": "Month 1 — days 1 to 8" },
+      "template": [
+        { "id": "month1.days1to8.amount", "kind": "text", "box": [50.4, 252.0, 84.4, 15.0], "layout": { "mode": "split", "segments": [{ "id": "dollars", "part": "integer", "w": 57.6, "align": "right", "pad": { "right": 3 } }, { "id": "point", "w": 7.2 }, { "id": "cents", "part": "fraction", "w": 19.6, "align": "center", "pad": 0 }] }, "style": "money", "format": "usdCents", "bind": "@", "refs": { "acroField": "f1_15[0]+f1_16[0]", "label": "Month 1 liability, day = slot + 1" } }
+      ]
+    },
+    {
+      "id": "month1.days9to16",
+      "kind": "repeat",
+      "page": 0,
+      "bind": "$.scheduleB.months[0].days[8:16]",
+      "slots": { "count": 8, "advance": { "dx": 0, "dy": 18 } },
+      "overflow": { "strategy": "error" },
+      "refs": { "label": "Month 1 — days 9 to 16" },
+      "template": [
+        { "id": "month1.days9to16.amount", "kind": "text", "box": [151.2, 252.0, 84.4, 15.0], "layout": { "mode": "split", "segments": [{ "id": "dollars", "part": "integer", "w": 57.6, "align": "right", "pad": { "right": 3 } }, { "id": "point", "w": 7.2 }, { "id": "cents", "part": "fraction", "w": 19.6, "align": "center", "pad": 0 }] }, "style": "money", "format": "usdCents", "bind": "@", "refs": { "acroField": "f1_31[0]+f1_32[0]", "label": "Month 1 liability, day = slot + 9" } }
+      ]
+    },
+    {
+      "id": "month1.days17to24",
+      "kind": "repeat",
+      "page": 0,
+      "bind": "$.scheduleB.months[0].days[16:24]",
+      "slots": { "count": 8, "advance": { "dx": 0, "dy": 18 } },
+      "overflow": { "strategy": "error" },
+      "refs": { "label": "Month 1 — days 17 to 24" },
+      "template": [
+        { "id": "month1.days17to24.amount", "kind": "text", "box": [252.0, 252.0, 84.4, 15.0], "layout": { "mode": "split", "segments": [{ "id": "dollars", "part": "integer", "w": 57.6, "align": "right", "pad": { "right": 3 } }, { "id": "point", "w": 7.2 }, { "id": "cents", "part": "fraction", "w": 19.6, "align": "center", "pad": 0 }] }, "style": "money", "format": "usdCents", "bind": "@", "refs": { "acroField": "f1_47[0]+f1_48[0]", "label": "Month 1 liability, day = slot + 17" } }
+      ]
+    },
+    {
+      "id": "month1.days25to31",
+      "kind": "repeat",
+      "page": 0,
+      "bind": "$.scheduleB.months[0].days[24:31]",
+      "slots": { "count": 7, "advance": { "dx": 0, "dy": 18 } },
+      "overflow": { "strategy": "error" },
+      "refs": { "label": "Month 1 — days 25 to 31" },
+      "template": [
+        { "id": "month1.days25to31.amount", "kind": "text", "box": [352.8, 252.0, 84.4, 15.0], "layout": { "mode": "split", "segments": [{ "id": "dollars", "part": "integer", "w": 57.6, "align": "right", "pad": { "right": 3 } }, { "id": "point", "w": 7.2 }, { "id": "cents", "part": "fraction", "w": 19.6, "align": "center", "pad": 0 }] }, "style": "money", "format": "usdCents", "bind": "@", "refs": { "acroField": "f1_63[0]+f1_64[0]", "label": "Month 1 liability, day = slot + 25" } }
+      ]
+    },
+    {
+      "id": "month1.total",
+      "kind": "text",
+      "page": 0,
+      "box": [453.6, 276.0, 120.4, 16.0],
+      "layout": { "mode": "split", "segments": [{ "id": "dollars", "part": "integer", "w": 91.6, "align": "right", "pad": { "right": 4 } }, { "id": "point", "w": 9.95 }, { "id": "cents", "part": "fraction", "w": 18.85, "align": "center", "pad": 0 }] },
+      "style": "money",
+      "format": "usdCents",
+      "bind": { "path": "$.scheduleB.months[0].days[*]", "transform": [{ "op": "sum" }, { "op": "round", "decimals": 2 }] },
+      "refs": { "acroField": "f1_77[0]+f1_78[0]", "label": "Tax liability for Month 1" }
+    },
+
+    {
+      "id": "month2.days1to8",
+      "kind": "repeat",
+      "page": 0,
+      "bind": "$.scheduleB.months[1].days[0:8]",
+      "slots": { "count": 8, "advance": { "dx": 0, "dy": 18 } },
+      "overflow": { "strategy": "error" },
+      "refs": { "label": "Month 2 — days 1 to 8" },
+      "template": [
+        { "id": "month2.days1to8.amount", "kind": "text", "box": [50.4, 408.0, 84.4, 15.0], "layout": { "mode": "split", "segments": [{ "id": "dollars", "part": "integer", "w": 57.6, "align": "right", "pad": { "right": 3 } }, { "id": "point", "w": 7.2 }, { "id": "cents", "part": "fraction", "w": 19.6, "align": "center", "pad": 0 }] }, "style": "money", "format": "usdCents", "bind": "@", "refs": { "acroField": "f1_79[0]+f1_80_[0]", "label": "Month 2 liability, day = slot + 1" } }
+      ]
+    },
+    {
+      "id": "month2.days9to16",
+      "kind": "repeat",
+      "page": 0,
+      "bind": "$.scheduleB.months[1].days[8:16]",
+      "slots": { "count": 8, "advance": { "dx": 0, "dy": 18 } },
+      "overflow": { "strategy": "error" },
+      "refs": { "label": "Month 2 — days 9 to 16" },
+      "template": [
+        { "id": "month2.days9to16.amount", "kind": "text", "box": [151.2, 408.0, 84.4, 15.0], "layout": { "mode": "split", "segments": [{ "id": "dollars", "part": "integer", "w": 57.6, "align": "right", "pad": { "right": 3 } }, { "id": "point", "w": 7.2 }, { "id": "cents", "part": "fraction", "w": 19.6, "align": "center", "pad": 0 }] }, "style": "money", "format": "usdCents", "bind": "@", "refs": { "acroField": "f1_95[0]+f1_96[0]", "label": "Month 2 liability, day = slot + 9" } }
+      ]
+    },
+    {
+      "id": "month2.days17to24",
+      "kind": "repeat",
+      "page": 0,
+      "bind": "$.scheduleB.months[1].days[16:24]",
+      "slots": { "count": 8, "advance": { "dx": 0, "dy": 18 } },
+      "overflow": { "strategy": "error" },
+      "refs": { "label": "Month 2 — days 17 to 24" },
+      "template": [
+        { "id": "month2.days17to24.amount", "kind": "text", "box": [252.0, 408.0, 84.4, 15.0], "layout": { "mode": "split", "segments": [{ "id": "dollars", "part": "integer", "w": 57.6, "align": "right", "pad": { "right": 3 } }, { "id": "point", "w": 7.2 }, { "id": "cents", "part": "fraction", "w": 19.6, "align": "center", "pad": 0 }] }, "style": "money", "format": "usdCents", "bind": "@", "refs": { "acroField": "f1_111[0]+f1_112[0]", "label": "Month 2 liability, day = slot + 17" } }
+      ]
+    },
+    {
+      "id": "month2.days25to31",
+      "kind": "repeat",
+      "page": 0,
+      "bind": "$.scheduleB.months[1].days[24:31]",
+      "slots": { "count": 7, "advance": { "dx": 0, "dy": 18 } },
+      "overflow": { "strategy": "error" },
+      "refs": { "label": "Month 2 — days 25 to 31" },
+      "template": [
+        { "id": "month2.days25to31.amount", "kind": "text", "box": [352.8, 408.0, 84.4, 15.0], "layout": { "mode": "split", "segments": [{ "id": "dollars", "part": "integer", "w": 57.6, "align": "right", "pad": { "right": 3 } }, { "id": "point", "w": 7.2 }, { "id": "cents", "part": "fraction", "w": 19.6, "align": "center", "pad": 0 }] }, "style": "money", "format": "usdCents", "bind": "@", "refs": { "acroField": "f1_127[0]+f1_128[0]", "label": "Month 2 liability, day = slot + 25" } }
+      ]
+    },
+    {
+      "id": "month2.total",
+      "kind": "text",
+      "page": 0,
+      "box": [453.6, 432.0, 120.4, 16.0],
+      "layout": { "mode": "split", "segments": [{ "id": "dollars", "part": "integer", "w": 91.6, "align": "right", "pad": { "right": 4 } }, { "id": "point", "w": 9.2 }, { "id": "cents", "part": "fraction", "w": 19.6, "align": "center", "pad": 0 }] },
+      "style": "money",
+      "format": "usdCents",
+      "bind": { "path": "$.scheduleB.months[1].days[*]", "transform": [{ "op": "sum" }, { "op": "round", "decimals": 2 }] },
+      "refs": { "acroField": "f1_141[0]+f1_142[0]", "label": "Tax liability for Month 2" }
+    },
+
+    {
+      "id": "month3.days1to8",
+      "kind": "repeat",
+      "page": 0,
+      "bind": "$.scheduleB.months[2].days[0:8]",
+      "slots": { "count": 8, "advance": { "dx": 0, "dy": 18 } },
+      "overflow": { "strategy": "error" },
+      "refs": { "label": "Month 3 — days 1 to 8" },
+      "template": [
+        { "id": "month3.days1to8.amount", "kind": "text", "box": [50.4, 564.0, 84.4, 15.0], "layout": { "mode": "split", "segments": [{ "id": "dollars", "part": "integer", "w": 57.6, "align": "right", "pad": { "right": 3 } }, { "id": "point", "w": 7.2 }, { "id": "cents", "part": "fraction", "w": 19.6, "align": "center", "pad": 0 }] }, "style": "money", "format": "usdCents", "bind": "@", "refs": { "acroField": "f1_143[0]+f1_144[0]", "label": "Month 3 liability, day = slot + 1" } }
+      ]
+    },
+    {
+      "id": "month3.days9to16",
+      "kind": "repeat",
+      "page": 0,
+      "bind": "$.scheduleB.months[2].days[8:16]",
+      "slots": { "count": 8, "advance": { "dx": 0, "dy": 18 } },
+      "overflow": { "strategy": "error" },
+      "refs": { "label": "Month 3 — days 9 to 16" },
+      "template": [
+        { "id": "month3.days9to16.amount", "kind": "text", "box": [151.2, 564.0, 84.4, 15.0], "layout": { "mode": "split", "segments": [{ "id": "dollars", "part": "integer", "w": 57.6, "align": "right", "pad": { "right": 3 } }, { "id": "point", "w": 7.2 }, { "id": "cents", "part": "fraction", "w": 19.6, "align": "center", "pad": 0 }] }, "style": "money", "format": "usdCents", "bind": "@", "refs": { "acroField": "f1_159[0]+f1_160[0]", "label": "Month 3 liability, day = slot + 9" } }
+      ]
+    },
+    {
+      "id": "month3.days17to24",
+      "kind": "repeat",
+      "page": 0,
+      "bind": "$.scheduleB.months[2].days[16:24]",
+      "slots": { "count": 8, "advance": { "dx": 0, "dy": 18 } },
+      "overflow": { "strategy": "error" },
+      "refs": { "label": "Month 3 — days 17 to 24" },
+      "template": [
+        { "id": "month3.days17to24.amount", "kind": "text", "box": [252.0, 564.0, 84.4, 15.0], "layout": { "mode": "split", "segments": [{ "id": "dollars", "part": "integer", "w": 57.6, "align": "right", "pad": { "right": 3 } }, { "id": "point", "w": 7.2 }, { "id": "cents", "part": "fraction", "w": 19.6, "align": "center", "pad": 0 }] }, "style": "money", "format": "usdCents", "bind": "@", "refs": { "acroField": "f1_175[0]+f1_176[0]", "label": "Month 3 liability, day = slot + 17" } }
+      ]
+    },
+    {
+      "id": "month3.days25to31",
+      "kind": "repeat",
+      "page": 0,
+      "bind": "$.scheduleB.months[2].days[24:31]",
+      "slots": { "count": 7, "advance": { "dx": 0, "dy": 18 } },
+      "overflow": { "strategy": "error" },
+      "refs": { "label": "Month 3 — days 25 to 31" },
+      "template": [
+        { "id": "month3.days25to31.amount", "kind": "text", "box": [352.8, 564.0, 84.4, 15.0], "layout": { "mode": "split", "segments": [{ "id": "dollars", "part": "integer", "w": 57.6, "align": "right", "pad": { "right": 3 } }, { "id": "point", "w": 7.2 }, { "id": "cents", "part": "fraction", "w": 19.6, "align": "center", "pad": 0 }] }, "style": "money", "format": "usdCents", "bind": "@", "refs": { "acroField": "f1_191[0]+f1_192[0]", "label": "Month 3 liability, day = slot + 25" } }
+      ]
+    },
+    {
+      "id": "month3.total",
+      "kind": "text",
+      "page": 0,
+      "box": [453.6, 588.0, 120.4, 16.0],
+      "layout": { "mode": "split", "segments": [{ "id": "dollars", "part": "integer", "w": 91.6, "align": "right", "pad": { "right": 4 } }, { "id": "point", "w": 9.2 }, { "id": "cents", "part": "fraction", "w": 19.6, "align": "center", "pad": 0 }] },
+      "style": "money",
+      "format": "usdCents",
+      "bind": { "path": "$.scheduleB.months[2].days[*]", "transform": [{ "op": "sum" }, { "op": "round", "decimals": 2 }] },
+      "refs": { "acroField": "f1_205[0]+f1_206[0]", "label": "Tax liability for Month 3" }
+    },
+
+    {
+      "id": "quarter.total",
+      "kind": "text",
+      "page": 0,
+      "box": [453.6, 726.0, 120.4, 16.0],
+      "layout": { "mode": "split", "segments": [{ "id": "dollars", "part": "integer", "w": 91.6, "align": "right", "pad": { "right": 4 } }, { "id": "point", "w": 9.2 }, { "id": "cents", "part": "fraction", "w": 19.6, "align": "center", "pad": 0 }] },
+      "style": "money",
+      "format": "usdCents",
+      "bind": { "required": true, "path": "$.scheduleB.months[*].days[*]", "transform": [{ "op": "sum" }, { "op": "round", "decimals": 2 }] },
+      "refs": { "acroField": "f1_207[0]+f1_208[0]", "label": "Total liability for the quarter (must equal Form 941 line 12)" }
+    }
+  ]
+}
